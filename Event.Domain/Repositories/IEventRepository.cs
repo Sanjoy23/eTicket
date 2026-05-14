@@ -1,4 +1,4 @@
-﻿using Event.Domain.Entities;
+﻿using Event.Domain.Entities.Events;
 
 namespace Event.Domain.Repositories
 {

@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Event.Domain.Entities.Events;
+using Event.Domain.Entities.Seating;
+using Event.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Event.Domain.Entities
 {
@@ -17,9 +20,7 @@ namespace Event.Domain.Entities
 
         public Seat Seat { get; set; }
 
-        public bool IsBooked { get; set; }
-
-        public Guid? BookingId { get; set; }
+        public SeatBookingStatus Status { get; set; }
 
         public decimal Price { get; set; }
     }

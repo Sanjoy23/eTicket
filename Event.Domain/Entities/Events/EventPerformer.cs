@@ -1,4 +1,4 @@
-﻿namespace Event.Domain.Entities
+﻿namespace Event.Domain.Entities.Events
 {
     public class EventPerformer
     {

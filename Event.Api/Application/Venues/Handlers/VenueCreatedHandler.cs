@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Event.API.Application.Venues.Handlers
 {
-    public class VenueCreatedHandler : IRequestHandler<CreateVenueCommand, int>
+    public class VenueCreatedHandler : IRequestHandler<CreateVenueCommand, Guid>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -14,7 +14,7 @@ namespace Event.API.Application.Venues.Handlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<int> Handle(CreateVenueCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateVenueCommand request, CancellationToken cancellationToken)
         {
             var newVenue = new Venue
             {
@@ -22,11 +22,14 @@ namespace Event.API.Application.Venues.Handlers
                 VenueName = request.VenueName,
                 Description = request.Description,
                 Capacity = request.Capacity,
-                Address = request.Address
-
+                Address = request.Address,
+                City = request.City,
+                Country = request.Country
             };
+
             await _unitOfWork.Venues.Add(newVenue);
-            return await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            return newVenue.VenueId;
         }
     }
 }

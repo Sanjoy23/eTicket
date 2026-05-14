@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Event.Domain.Entities.Events;
+using System.ComponentModel.DataAnnotations;
 
 namespace Event.Domain.Entities
 {
@@ -21,5 +22,7 @@ namespace Event.Domain.Entities
         public ICollection<EventPerformer> EventPerformers { get; set; } = new List<EventPerformer>();
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public bool IsDeleted { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

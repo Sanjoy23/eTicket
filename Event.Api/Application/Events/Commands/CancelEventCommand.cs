@@ -1,6 +1,9 @@
-﻿namespace Event.API.Application.Commands
+﻿using MediatR;
+
+namespace Event.API.Application.Commands
 {
-    public class CancelEventCommand
+    public class CancelEventCommand : IRequest<Unit>
     {
+        public Guid EventId { get; set; }
     }
 }

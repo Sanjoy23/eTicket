@@ -1,7 +1,8 @@
-﻿using Event.Domain.Enums;
+﻿using Event.Domain.Entities.Venues;
+using Event.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace Event.Domain.Entities
+namespace Event.Domain.Entities.Events
 {
     public class EventEntity
     {
@@ -13,19 +14,12 @@ namespace Event.Domain.Entities
         public string Description { get; set; } = string.Empty;
         [Required]
         public EventType Type { get; set; }
-        [Required]
-        public Guid VenueId { get; set; }
-        public Venue Venue { get; set; }
         public ICollection<EventPerformer> EventPerformers { get; set; } = new List<EventPerformer>();
         [Required]
-        public DateTime StartDate { get; set; }
-        [Required]
-        public DateTime EndDate { get; set; }
-        [Required]
-        public int TotalSeats { get; set; }
-
         public EventStatus Status { get; set; } 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public bool IsDeleted { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         public ICollection<EventSeat> EventSeats { get; set; }
         = new List<EventSeat>();

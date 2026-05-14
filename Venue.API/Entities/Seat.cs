@@ -1,7 +1,6 @@
-﻿using Event.Domain.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Event.Domain.Entities
+namespace Venue.Entities
 {
     public class Seat
     {

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Event.API.Application.Commands
 {
-    public class CreateEventCommand : IRequest<int>
+    public class CreateEventCommand : IRequest<Guid>
     {
         public string EventName { get; set; }
         public string Description { get; set; }

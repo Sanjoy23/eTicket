@@ -17,8 +17,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Event.Domain\Event.Domain.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="EntityConfigurations\" />
-  </ItemGroup>
 </Project>

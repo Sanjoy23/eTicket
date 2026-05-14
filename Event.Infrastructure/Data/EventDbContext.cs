@@ -1,6 +1,10 @@
 ﻿using Event.Domain.Enums;
 using Event.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Event.Domain.Entities.Events;
+using Event.Domain.Entities.Venues;
+using Event.Domain.Entities.Seating;
+using Event.Domain.Entities.Booking;
 
 namespace Event.Infrastructure.Data
 {

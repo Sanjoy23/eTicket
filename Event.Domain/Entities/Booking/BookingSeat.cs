@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Event.Domain.Entities
+namespace Event.Domain.Entities.Booking
 {
     public class BookingSeat
     {

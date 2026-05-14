@@ -1,11 +1,12 @@
 ﻿using Event.API.Application.Commands;
 using Event.Domain.Entities;
+using Event.Domain.Enums;
 using Event.Domain.Repositories;
 using MediatR;
 
 namespace Event.API.Application.Events.Handlers
 {
-    public class EventCreatedHandler : IRequestHandler<CreateEventCommand, int>
+    public class EventCreatedHandler : IRequestHandler<CreateEventCommand, Guid>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -14,7 +15,7 @@ namespace Event.API.Application.Events.Handlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<int> Handle(CreateEventCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {
             var newEvent = new EventEntity
             {
@@ -26,11 +27,12 @@ namespace Event.API.Application.Events.Handlers
                 TotalSeats = request.TotalSeats,
                 StartDate = request.StartDate,
                 EndDate = request.EndDate,
-
+                Status = EventStatus.Upcoming
             };
+
             await _unitOfWork.Events.Add(newEvent);
-            return await _unitOfWork.SaveChangesAsync(cancellationToken);
-            
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            return newEvent.EventId;
         }
     }
 }
