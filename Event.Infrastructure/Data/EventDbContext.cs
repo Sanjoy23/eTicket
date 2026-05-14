@@ -1,10 +1,11 @@
 ﻿using Event.Domain.Enums;
 using Event.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Event.Domain.Entities.Events;
-using Event.Domain.Entities.Venues;
-using Event.Domain.Entities.Seating;
 using Event.Domain.Entities.Booking;
+using Event.Domain.Entities.Events;
+using Event.Domain.Entities.Seating;
+using Event.Domain.Entities.Ticketing;
+using Event.Domain.Entities.Venues;
+using Microsoft.EntityFrameworkCore;
 
 namespace Event.Infrastructure.Data
 {
@@ -16,11 +17,7 @@ namespace Event.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<EventEntity>()
-            .HasOne(e => e.Venue)
-            .WithMany(v => v.Events)
-            .HasForeignKey(e => e.VenueId)
-            .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(EventDbContext).Assembly);
 
             modelBuilder.Entity<EventPerformer>()
             .HasKey(ep => new { ep.EventId, ep.PerformerId });
@@ -39,6 +36,7 @@ namespace Event.Infrastructure.Data
                 .Property(e => e.Type)
                 .HasConversion<string>()
                 .HasDefaultValue(EventType.NotAdded);
+
             modelBuilder.Entity<EventEntity>()
                 .Property(e => e.Status)
                 .HasConversion<string>()
@@ -61,6 +59,24 @@ namespace Event.Infrastructure.Data
                 .HasOne(es => es.Seat)
                 .WithMany()
                 .HasForeignKey(es => es.SeatId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<EventSession>()
+                .HasOne(es => es.Event)
+                .WithMany()
+                .HasForeignKey(es => es.EventId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<EventSession>()
+                .HasOne(es => es.Venue)
+                .WithMany()
+                .HasForeignKey(es => es.VenueId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<EventSession>()
+                .HasOne(es => es.Hall)
+                .WithMany()
+                .HasForeignKey(es => es.HallId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<BookingSeat>()
@@ -86,34 +102,18 @@ namespace Event.Infrastructure.Data
 
         }
 
-        private static void ConfigureVenue(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Venue>()
-                .HasMany(v => v.Seats)
-                .WithOne(e => e.Venue)
-                .HasForeignKey(s => s.VenueId);
-
-            modelBuilder.Entity<Venue>()
-            .HasMany(v => v.Events)
-            .WithOne(e => e.Venue)
-            .HasForeignKey(e => e.VenueId);
-        }
-        private static void ConfigureEvent(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<EventEntity>()
-                .HasMany(e => e.EventSeats)
-                .WithOne(es => es.Event)
-                .HasForeignKey(es => es.EventId);
-        }
-
-
         public DbSet<EventEntity> Events { get; set; }
         public DbSet<Venue> Venues { get; set; }
         public DbSet<Performer> Performers { get; set; }
         public DbSet<EventPerformer> EventPerformers { get; set; }
         public DbSet<Seat> Seats { get; set; }
+        public DbSet<Hall> Halls { get; set; }
+        public DbSet<EventSession> EventSessions { get; set; }
         public DbSet<EventSeat> EventSeats { get; set; }
+        public DbSet<EventSeatInventory> EventSeatInventories { get; set; }
+        public DbSet<SeatLock> SeatLocks { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<BookingSeat> BookingsSeats { get; set; }
+        public DbSet<Tickets> Tickets { get; set; }
     }
 }

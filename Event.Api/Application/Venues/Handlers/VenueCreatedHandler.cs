@@ -1,5 +1,5 @@
 ﻿using Event.API.Application.Venues.Commands;
-using Event.Domain.Entities;
+using Event.Domain.Entities.Venues;
 using Event.Domain.Repositories;
 using MediatR;
 

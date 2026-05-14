@@ -1,5 +1,5 @@
 ﻿using Event.API.Application.Commands;
-using Event.Domain.Entities;
+using Event.Domain.Entities.Events;
 using Event.Domain.Enums;
 using Event.Domain.Repositories;
 using MediatR;
@@ -22,11 +22,7 @@ namespace Event.API.Application.Events.Handlers
                 EventId = Guid.NewGuid(),
                 EventName = request.EventName,
                 Type = request.EventType,
-                VenueId = request.VenueId,
                 Description = request.Description,
-                TotalSeats = request.TotalSeats,
-                StartDate = request.StartDate,
-                EndDate = request.EndDate,
                 Status = EventStatus.Upcoming
             };
 
