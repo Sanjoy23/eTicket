@@ -1,0 +1,75 @@
+# Build Folders
+bin/
+obj/
+publish/
+out/
+
+# Build Results
+*.dll
+*.exe
+*.pdb
+*.apphost
+*.deps.json
+*.runtimeconfig.json
+
+# User-Specific Files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio specific
+.vscode/
+.vs/
+*.sln.ide
+*.sln.docstates
+
+# Configuration Files (optional)
+appsettings.Development.json
+appsettings.Local.json
+appsettings.secrets.json
+
+# Secrets and Keys
+secrets.json
+.env
+
+# NuGet Packages
+*.nupkg
+packages/
+project.lock.json
+
+# Logs
+*.log
+Logs/
+
+# Temporary Files
+*.tmp
+*.temp
+
+# Coverage Reports
+coverage/
+*.coverage
+*.coveragexml
+
+# Database Files
+*.mdf
+*.ldf
+*.sqlite
+dbParkPoint-wal
+dbParkPoint-shm
+
+# macOS System Files
+.DS_Store
+
+# Windows System Files
+Thumbs.db
+desktop.ini
+
+# Rider Specific
+.idea/
+*.sln.iml
+
+# JetBrains IDEs
+*.dotCover
+*.dotMemory
+*.dotTrace
