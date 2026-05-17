@@ -11,6 +11,8 @@ namespace Event.Infrastructure.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IVenueRepository, VenueRepository>();
+            services.AddScoped<IEventSessionRepository, EventSessionRepository>();
+            services.AddScoped<IEventSeatInventoryRepository, EventSeatInventoryRepository>();
             return services;
         }
     }

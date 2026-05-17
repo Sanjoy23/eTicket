@@ -4,6 +4,5 @@ namespace Event.Domain.Repositories
 {
     public interface IVenueRepository : IGenericRepository<Venue>
     {
-        
     }
 }

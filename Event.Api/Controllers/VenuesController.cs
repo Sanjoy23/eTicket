@@ -31,6 +31,13 @@ namespace Event.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{id:guid}/availability")]
+        public async Task<ActionResult<VenueDto>> GetAvailabilityById(Guid id)
+        {
+            var result = await _mediator.Send(new GetVenueAvailabiltiyById { VenueId = id });
+            return Ok(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateVenueCommand command)
         {

@@ -10,14 +10,20 @@ namespace Event.Infrastructure.Repositories
         public IEventRepository Events { get; }
         public IVenueRepository Venues { get; }
 
+        public IEventSessionRepository EventsSession { get; }   
+        public IEventSeatInventoryRepository EventsSeatInventory { get; }
+
         public UnitOfWork(
             EventDbContext context, 
             IEventRepository eventRepository, 
-            IVenueRepository venueRepository)
+            IVenueRepository venueRepository, IEventSessionRepository eventSessionRepository,
+            IEventSeatInventoryRepository eventSeatInventoryRepository)
         {
             _context = context;
             Events = eventRepository;
             Venues = venueRepository;
+            EventsSession = eventSessionRepository;
+            EventsSeatInventory = eventSeatInventoryRepository;
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

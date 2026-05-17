@@ -4,6 +4,8 @@
     {
         IEventRepository Events { get; }
         IVenueRepository Venues { get; }
+        IEventSessionRepository EventsSession { get; }
+        IEventSeatInventoryRepository EventsSeatInventory { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
