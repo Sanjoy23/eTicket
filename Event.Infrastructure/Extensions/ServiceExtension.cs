@@ -13,6 +13,7 @@ namespace Event.Infrastructure.Extensions
             services.AddScoped<IVenueRepository, VenueRepository>();
             services.AddScoped<IEventSessionRepository, EventSessionRepository>();
             services.AddScoped<IEventSeatInventoryRepository, EventSeatInventoryRepository>();
+            services.AddScoped<ISeatLockRepository, SeatLockRepository>();
             return services;
         }
     }

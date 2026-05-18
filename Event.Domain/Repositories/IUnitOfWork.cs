@@ -6,6 +6,7 @@
         IVenueRepository Venues { get; }
         IEventSessionRepository EventsSession { get; }
         IEventSeatInventoryRepository EventsSeatInventory { get; }
+        ISeatLockRepository SeatLocks { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

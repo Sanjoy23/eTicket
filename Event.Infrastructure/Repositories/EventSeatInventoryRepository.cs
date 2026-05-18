@@ -30,5 +30,13 @@ namespace Event.Infrastructure.Repositories
                 .ThenBy(inv => inv.Seat.SeatNumber)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<EventSeatInventory>> GetBySessionIdAndSeatIds(Guid sessionId, IEnumerable<Guid> seatIds)
+        {
+            return await _dbSet
+                .Where(inv => inv.EventSessionId == sessionId)
+                .Where(inv => seatIds.Contains(inv.SeatId))
+                .ToListAsync();
+        }
     }
 }

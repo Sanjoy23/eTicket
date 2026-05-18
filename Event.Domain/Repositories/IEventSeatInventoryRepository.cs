@@ -9,5 +9,6 @@ namespace Event.Domain.Repositories
     {
         Task<int> CountAvailableSeatsByVenueId(Guid venueId);
         Task<IEnumerable<EventSeatInventory>> GetBySessionId(Guid sessionId);
+        Task<IEnumerable<EventSeatInventory>> GetBySessionIdAndSeatIds(Guid sessionId, IEnumerable<Guid> seatIds);
     }
 }

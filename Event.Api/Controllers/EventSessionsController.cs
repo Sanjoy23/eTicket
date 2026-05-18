@@ -34,9 +34,9 @@ namespace Event.API.Controllers
         }
 
         [HttpGet("sessions/{sessionId:guid}")]
-        public async Task<IActionResult> Get(Guid sessionIdId)
+        public async Task<IActionResult> Get(Guid sessionId)
         {
-            var result = await _mediator.Send(new GetSessionByIdQuery { SessionId = sessionIdId });
+            var result = await _mediator.Send(new GetSessionByIdQuery { SessionId = sessionId });
             return Ok(result);
         }
 
