@@ -19,5 +19,16 @@ namespace Event.Infrastructure.Repositories
                 .AsNoTracking()
                 .CountAsync();
         }
+
+        public async Task<IEnumerable<EventSeatInventory>> GetBySessionId(Guid sessionId)
+        {
+            return await _dbSet
+                .Include(inv => inv.Seat)
+                .Where(inv => inv.EventSessionId == sessionId)
+                .AsNoTracking()
+                .OrderBy(inv => inv.Seat.RowLabel)
+                .ThenBy(inv => inv.Seat.SeatNumber)
+                .ToListAsync();
+        }
     }
 }

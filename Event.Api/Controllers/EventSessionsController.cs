@@ -1,11 +1,12 @@
 ﻿using Event.API.Application.Sessions.Commands;
+using Event.API.Application.Sessions.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Event.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class EventSessionsController : ControllerBase
     {
@@ -23,6 +24,27 @@ namespace Event.API.Controllers
             var sessionId = await _mediator.Send(command);
             return CreatedAtAction(nameof(Create), new {eventId = command.EventId, sessionId}, sessionId);
 
+        }
+
+        [HttpGet("events/{eventId:guid}/sessions")]
+        public async Task<IActionResult> GetByEvent(Guid eventId)
+        {
+            var result = await _mediator.Send(new GetEventSessionsQuery { EventId = eventId});
+            return Ok(result);
+        }
+
+        [HttpGet("sessions/{sessionId:guid}")]
+        public async Task<IActionResult> Get(Guid sessionIdId)
+        {
+            var result = await _mediator.Send(new GetSessionByIdQuery { SessionId = sessionIdId });
+            return Ok(result);
+        }
+
+        [HttpGet("sessions/{sessionId:guid}/seat-map")]
+        public async Task<IActionResult> GetSeatMap(Guid sessionId)
+        {
+            var result = await _mediator.Send(new GetSessionSeatMapQuery { SessionId = sessionId });
+            return Ok(result);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Event.API.Application.Sessions.Commands;
 using Event.Domain.Entities.Events;
+using Event.Domain.Enums;
 using Event.Domain.Repositories;
 using MediatR;
 
@@ -16,6 +17,15 @@ namespace Event.API.Application.Sessions.Handlers
 
         public async Task<Guid> Handle(CreateEventSessionCommand request, CancellationToken cancellationToken)
         {
+            var isOverlapping = await _unitOfWork.EventsSession
+                .AnyAsync(es =>
+                es.HallId == request.HallId &&
+                es.Status != SessionStatus.Cancelled &&
+                request.StartTimeUtc < es.EndTimeUtc &&
+                request.EndTimeUtc > es.StartTimeUtc);
+
+            if (isOverlapping) throw new Exception("Time overlapping");
+
             var session = new EventSession
             {
                 EventSessionId = Guid.NewGuid(),

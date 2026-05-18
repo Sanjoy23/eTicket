@@ -1,4 +1,5 @@
 ﻿using Event.Domain.Entities.Events;
+using Event.Domain.Entities.Venues;
 using Event.Domain.Repositories;
 using Event.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,13 @@ namespace Event.Infrastructure.Repositories
                 .Where(es => es.VenueId == venueId && es.EndTimeUtc > now)
                 .AsNoTracking()
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<EventSession>> GetEventSessionByEvent(Guid eventId) { 
+            return await _dbSet
+                .Where(es => es.EventId == eventId)
+                .Include(es => es.Venue)
+                .Include(es => es.Hall).ToListAsync();
         }
     }
 }
