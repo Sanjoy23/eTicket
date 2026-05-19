@@ -1,18 +1,15 @@
-﻿using Event.Domain.Entities.Events;
-using Event.Domain.Enums;
+﻿using Booking.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace Event.Domain.Entities.Booking
+namespace Booking.Domain.Entities
 {
-    public class Booking
+    public class Bookinge
     {
         [Key]
         public Guid BookingId { get; set; }
         public Guid UserId { get; set; }
 
         public Guid EventId { get; set; }
-
-        public EventEntity Event { get; set; }
 
         public decimal TotalAmount { get; set; }
 

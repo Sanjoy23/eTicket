@@ -1,5 +1,4 @@
-﻿using Event.Domain.Entities.Booking;
-using Event.Domain.Enums;
+﻿using Event.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Event.Domain.Entities.Ticketing
@@ -11,7 +10,7 @@ namespace Event.Domain.Entities.Ticketing
 
         public Guid BookingSeatId { get; set; }
 
-        public BookingSeat BookingSeat { get; set; }
+        //public BookingSeat BookingSeat { get; set; }
 
         public string QRCode { get; set; } = string.Empty;
 

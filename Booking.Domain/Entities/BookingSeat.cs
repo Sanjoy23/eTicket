@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Event.Domain.Entities.Booking
+namespace Booking.Domain.Entities
 {
     public class BookingSeat
     {
@@ -9,10 +9,8 @@ namespace Event.Domain.Entities.Booking
 
         public Guid BookingId { get; set; }
 
-        public Booking Booking { get; set; }
+        public Bookinge Booking { get; set; }
 
         public Guid EventSeatId { get; set; }
-
-        public EventSeat EventSeat { get; set; }
     }
 }

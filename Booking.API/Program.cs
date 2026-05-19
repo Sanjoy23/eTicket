@@ -1,27 +1,24 @@
-namespace Booking.API
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+using Microsoft.EntityFrameworkCore;
+using Booking.Infrastructure.Data;
 
-            builder.Services.AddControllers();
+var builder = WebApplication.CreateBuilder(args);
 
-            var app = builder.Build();
+// Add services to the container.
 
-            // Configure the HTTP request pipeline.
+builder.Services.AddControllers();
+builder.Services.AddDbContext<EventDbContext>(options =>
+options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            app.UseHttpsRedirection();
+var app = builder.Build();
 
-            app.UseAuthorization();
+// Configure the HTTP request pipeline.
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
 
 
-            app.MapControllers();
+app.MapControllers();
 
-            app.Run();
-        }
-    }
-}
+app.Run();

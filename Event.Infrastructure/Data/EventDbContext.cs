@@ -1,6 +1,5 @@
 ﻿using Event.Domain.Enums;
 using Event.Domain.Entities;
-using Event.Domain.Entities.Booking;
 using Event.Domain.Entities.Events;
 using Event.Domain.Entities.Seating;
 using Event.Domain.Entities.Ticketing;
@@ -79,25 +78,25 @@ namespace Event.Infrastructure.Data
                 .HasForeignKey(es => es.HallId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<BookingSeat>()
-                .HasOne(bs => bs.Booking)
-                .WithMany(b => b.BookingSeats)
-                .HasForeignKey(bs => bs.BookingId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<BookingSeat>()
+            //    .HasOne(bs => bs.Booking)
+            //    .WithMany(b => b.BookingSeats)
+            //    .HasForeignKey(bs => bs.BookingId)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<BookingSeat>()
-                .HasOne(bs => bs.EventSeat)
-                .WithMany()
-                .HasForeignKey(bs => bs.EventSeatId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<BookingSeat>()
+            //    .HasOne(bs => bs.EventSeat)
+            //    .WithMany()
+            //    .HasForeignKey(bs => bs.EventSeatId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<EventSeat>()
                 .Property(es => es.Price)
                 .HasColumnType("decimal(18,2)");
 
-            modelBuilder.Entity<Booking>()
-                .Property(b => b.TotalAmount)
-                .HasColumnType("decimal(18,2)");
+            //modelBuilder.Entity<Booking>()
+            //    .Property(b => b.TotalAmount)
+            //    .HasColumnType("decimal(18,2)");
 
 
         }
@@ -112,8 +111,6 @@ namespace Event.Infrastructure.Data
         public DbSet<EventSeat> EventSeats { get; set; }
         public DbSet<EventSeatInventory> EventSeatInventories { get; set; }
         public DbSet<SeatLock> SeatLocks { get; set; }
-        public DbSet<Booking> Bookings { get; set; }
-        public DbSet<BookingSeat> BookingsSeats { get; set; }
         public DbSet<Tickets> Tickets { get; set; }
     }
 }
