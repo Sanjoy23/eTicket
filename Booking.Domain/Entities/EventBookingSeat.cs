@@ -2,14 +2,14 @@
 
 namespace Booking.Domain.Entities
 {
-    public class BookingSeat
+    public class EventBookingSeat
     {
         [Key]
         public Guid BookingSeatId { get; set; }
 
         public Guid BookingId { get; set; }
 
-        public Bookinge Booking { get; set; }
+        public EventBooking Booking { get; set; }
 
         public Guid EventSeatId { get; set; }
     }

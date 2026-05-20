@@ -1,7 +1,4 @@
 ﻿using Event.Domain.Entities.Events;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Event.Domain.Repositories
 {
@@ -10,5 +7,6 @@ namespace Event.Domain.Repositories
         Task<int> CountAvailableSeatsByVenueId(Guid venueId);
         Task<IEnumerable<EventSeatInventory>> GetBySessionId(Guid sessionId);
         Task<IEnumerable<EventSeatInventory>> GetBySessionIdAndSeatIds(Guid sessionId, IEnumerable<Guid> seatIds);
+        Task ConfirmSeats(Guid sessionId, Guid bookingId, Guid userId, IEnumerable<Guid> seatIds);
     }
 }

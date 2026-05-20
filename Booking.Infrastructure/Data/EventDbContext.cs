@@ -13,7 +13,7 @@ namespace Booking.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<Bookinge> Bookings { get; set; }
-        public DbSet<BookingSeat> BookingsSeats { get; set; }
+        public DbSet<EventBooking> Bookings { get; set; }
+        public DbSet<EventBookingSeat> BookingsSeats { get; set; }
     }
 }

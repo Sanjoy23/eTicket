@@ -39,7 +39,7 @@ namespace Event.API.Application.Sessions.Handlers
             if (session.Status == SessionStatus.Cancelled)
                 throw new InvalidOperationException("Cannot lock seats for a cancelled session.");
 
-            var inventories = (await _unitOfWork.EventsSeatInventory.GetBySessionIdAndSeatIds(request.SessionId, seatIds)).ToList();
+            var inventories = (await _unitOfWork.EventSeatInventories.GetBySessionIdAndSeatIds(request.SessionId, seatIds)).ToList();
             if (inventories.Count != seatIds.Length)
                 throw new InvalidOperationException("One or more requested seats do not belong to this session.");
 
@@ -64,7 +64,7 @@ namespace Event.API.Application.Sessions.Handlers
                 }
 
                 inventory.Status = SeatInventoryStatus.Locked;
-                _unitOfWork.EventsSeatInventory.Update(inventory);
+                _unitOfWork.EventSeatInventories.Update(inventory);
 
                 if (existingUserLockIds.Contains(inventory.SeatId))
                 {

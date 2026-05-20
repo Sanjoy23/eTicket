@@ -23,7 +23,7 @@ namespace Event.API.Application.Sessions.Handlers
                 throw new KeyNotFoundException($"Session with ID {request.SessionId} not found.");
             }
 
-            var seatInventories = await _unitOfWork.EventsSeatInventory.GetBySessionId(request.SessionId);
+            var seatInventories = await _unitOfWork.EventSeatInventories.GetBySessionId(request.SessionId);
 
             return new SessionSeatMapDto
             {

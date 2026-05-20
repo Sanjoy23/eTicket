@@ -34,7 +34,7 @@ namespace Event.API.Application.Sessions.Handlers
             if (locks.Count != seatIds.Length)
                 throw new InvalidOperationException("One or more requested seats are not locked by this user.");
 
-            var inventories = (await _unitOfWork.EventsSeatInventory.GetBySessionIdAndSeatIds(request.SessionId, seatIds)).ToList();
+            var inventories = (await _unitOfWork.EventSeatInventories.GetBySessionIdAndSeatIds(request.SessionId, seatIds)).ToList();
             if (inventories.Count != seatIds.Length)
                 throw new InvalidOperationException("One or more requested seats do not belong to this session.");
 
@@ -48,7 +48,7 @@ namespace Event.API.Application.Sessions.Handlers
                 if (inventory.Status == SeatInventoryStatus.Locked)
                 {
                     inventory.Status = SeatInventoryStatus.Available;
-                    _unitOfWork.EventsSeatInventory.Update(inventory);
+                    _unitOfWork.EventSeatInventories.Update(inventory);
                 }
             }
 

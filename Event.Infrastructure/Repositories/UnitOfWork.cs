@@ -11,7 +11,7 @@ namespace Event.Infrastructure.Repositories
         public IVenueRepository Venues { get; }
 
         public IEventSessionRepository EventsSession { get; }
-        public IEventSeatInventoryRepository EventsSeatInventory { get; }
+        public IEventSeatInventoryRepository EventSeatInventories { get; }
         public ISeatLockRepository SeatLocks { get; }
 
         public UnitOfWork(
@@ -26,7 +26,7 @@ namespace Event.Infrastructure.Repositories
             Events = eventRepository;
             Venues = venueRepository;
             EventsSession = eventSessionRepository;
-            EventsSeatInventory = eventSeatInventoryRepository;
+            EventSeatInventories = eventSeatInventoryRepository;
             SeatLocks = seatLockRepository;
         }
 

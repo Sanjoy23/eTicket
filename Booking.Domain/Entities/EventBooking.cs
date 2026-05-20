@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Booking.Domain.Entities
 {
-    public class Bookinge
+    public class EventBooking
     {
         [Key]
         public Guid BookingId { get; set; }
@@ -18,7 +18,7 @@ namespace Booking.Domain.Entities
         public DateTime CreatedAt { get; set; }
             = DateTime.UtcNow;
 
-        public ICollection<BookingSeat> BookingSeats { get; set; }
-            = new List<BookingSeat>();
+        public ICollection<EventBookingSeat> BookingSeats { get; set; }
+            = new List<EventBookingSeat>();
     }
 }

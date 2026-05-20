@@ -26,7 +26,7 @@ namespace Event.API.Application.Venues.Handlers
 
             var upcomingSessions = sessions.Count;
             var totalCapacity = sessions.Sum(s => s.TotalSeats);
-            var remainingCapacity = await _unitOfWork.EventsSeatInventory.CountAvailableSeatsByVenueId(venue.VenueId);
+            var remainingCapacity = await _unitOfWork.EventSeatInventories.CountAvailableSeatsByVenueId(venue.VenueId);
 
             var nextSession = sessions
                 .Where(s => s.AvailableSeats > 0 && s.StartTimeUtc > now)

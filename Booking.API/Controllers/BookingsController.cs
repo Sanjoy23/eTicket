@@ -1,6 +1,5 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Booking.API.Application.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Booking.API.Controllers
@@ -15,19 +14,20 @@ namespace Booking.API.Controllers
         {
             _mediator = mediator;
         }
-        [HttpPost]
-        public IActionResult Booking(Guid userId, List<Guid> SeatIds, Guid BookingId)
+        [HttpPost("book")]
+        public IActionResult Booking([FromBody] BookSeatsCommand command)
         {
+            _mediator.Send(command);
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("cancel")]
         public IActionResult Cancel(Guid userId, List<Guid> SeatIds, Guid BookingId)
         {
             return Ok();
         }
-        [HttpGet]
-        public IActionResult Get(Guid BookingId)
+        [HttpGet("{bookingId}")]
+        public IActionResult Get(Guid bookingId)
         {
             return Ok();
         }
