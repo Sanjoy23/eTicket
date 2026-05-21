@@ -25,8 +25,5 @@ namespace Event.Domain.Entities.Events
         public Guid? BookingId { get; set; }
 
         public DateTime? SoldAtUtc { get; set; }
-
-        [Timestamp]
-        public byte[] RowVersion { get; set; } = default!;
     }
 }

@@ -7,14 +7,10 @@ namespace Event.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SeatsController : ControllerBase
+    public class SeatsController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _mediator = mediator;
 
-        public SeatsController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
 
         [HttpPost("sessions/{sessionId:guid}/seats/lock")]
         public async Task<IActionResult> LockSeats(Guid sessionId, [FromBody] LockSessionSeatsCommand command)
@@ -26,7 +22,7 @@ namespace Event.API.Controllers
         [HttpPost("Seats/sessions/{sessionId}/seats/confirm")]
         public async Task<IActionResult> ConfirmSeats(Guid sessionId, ConfirmSeatsCommand command ) {
             var result = await _mediator.Send(command);
-            return Ok();
+            return Ok(result);
         }
 
         [HttpPost("sessions/{sessionId:guid}/seats/release")]

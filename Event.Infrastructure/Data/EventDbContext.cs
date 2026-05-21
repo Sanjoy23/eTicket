@@ -8,11 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Event.Infrastructure.Data
 {
-    public class EventDbContext : DbContext
+    public class EventDbContext(DbContextOptions<EventDbContext> options) : DbContext(options)
     {
-        public EventDbContext(DbContextOptions<EventDbContext> options) : base(options)
-        {
-        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

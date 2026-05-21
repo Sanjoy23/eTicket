@@ -6,14 +6,9 @@ using MediatR;
 
 namespace Event.API.Application.Sessions.Handlers
 {
-    public class EventSessionCreatedHandler : IRequestHandler<CreateEventSessionCommand, Guid>
+    public class EventSessionCreatedHandler(IUnitOfWork unitOfWork) : IRequestHandler<CreateEventSessionCommand, Guid>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public EventSessionCreatedHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<Guid> Handle(CreateEventSessionCommand request, CancellationToken cancellationToken)
         {
@@ -34,9 +29,11 @@ namespace Event.API.Application.Sessions.Handlers
                 VenueId = request.VenueId,
                 StartTimeUtc = request.StartTimeUtc,
                 EndTimeUtc = request.EndTimeUtc,
+                Status = request.Status,
                 TotalSeats = request.TotalSeats
             };
             await _unitOfWork.EventsSession.Add(session);
+            await _unitOfWork.EventSeatInventories.AddInventoriesForSessionAsync(session.EventSessionId, session.HallId, 500,"BDT", cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             return session.EventSessionId;
         }

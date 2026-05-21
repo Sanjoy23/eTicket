@@ -1,6 +1,7 @@
 ﻿using Event.Domain.Entities.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace Event.Infrastructure.EntityConfigurations
 {
@@ -18,10 +19,6 @@ namespace Event.Infrastructure.EntityConfigurations
             builder.Property(x => x.Currency)
                 .HasMaxLength(10)
                 .IsRequired();
-
-            // Optimistic concurrency
-            builder.Property(x => x.RowVersion)
-                .IsRowVersion();
 
             // CRITICAL UNIQUE CONSTRAINT
             builder.HasIndex(x => new { x.EventSessionId, x.SeatId })

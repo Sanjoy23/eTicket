@@ -8,14 +8,9 @@ namespace Event.API.Controllers
 {
     [Route("api/")]
     [ApiController]
-    public class EventSessionsController : ControllerBase
+    public class EventSessionsController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public EventSessionsController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        private readonly IMediator _mediator = mediator;
 
         [HttpPost("events/{eventId:guid}/sessions")]
         public async Task<IActionResult> Create(Guid eventId, [FromBody] CreateEventSessionCommand command)

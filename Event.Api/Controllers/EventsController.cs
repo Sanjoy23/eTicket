@@ -1,4 +1,4 @@
-﻿using Event.API.Application.Commands;
+﻿using Event.API.Application.Events.Commands;
 using Event.API.Application.Events.Queries;
 using Event.API.Models;
 using MediatR;

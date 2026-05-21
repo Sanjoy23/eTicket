@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Event.API.Application.Commands
+namespace Event.API.Application.Events.Commands
 {
     public class CancelEventCommand : IRequest<Unit>
     {

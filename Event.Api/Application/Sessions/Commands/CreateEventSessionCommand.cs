@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Event.Domain.Enums;
+using MediatR;
 
 namespace Event.API.Application.Sessions.Commands
 {
@@ -12,6 +13,11 @@ namespace Event.API.Application.Sessions.Commands
         public DateTime StartTimeUtc { get; set; }
 
         public DateTime EndTimeUtc { get; set; }
+
+        public SessionStatus Status { get; set; }
         public int TotalSeats { get; set; }
+
+        public int AvailableSeat { get; set; }
+        public DateTime CreatedAtUtc { get; set; }
     }
 }

@@ -13,8 +13,8 @@
         public Guid? EventId { get; set; }
         public Guid? VenueId { get; set; }
         public Guid? HallId { get; set; }
-        public string Sort { get; set; }
-        private string _search;
+        public string? Sort { get; set; }
+        private string _search = string.Empty;
         public string Search
         {
             get => _search;

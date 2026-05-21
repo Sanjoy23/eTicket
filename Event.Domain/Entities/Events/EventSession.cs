@@ -39,6 +39,6 @@ namespace Event.Domain.Entities.Events
         public DateTime CreatedAtUtc { get; set; }
 
         public ICollection<EventSeatInventory> SeatInventories { get; set; }
-            = new List<EventSeatInventory>();
+            = [];
     }
 }

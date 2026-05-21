@@ -7,12 +7,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Event.Infrastructure.Repositories
 {
-    public class EventSeatInventoryRepository : GenericRepository<EventSeatInventory>, IEventSeatInventoryRepository
+    public class EventSeatInventoryRepository(EventDbContext context) 
+                    : GenericRepository<EventSeatInventory>(context), IEventSeatInventoryRepository
     {
-        private readonly EventDbContext _context;
-        public EventSeatInventoryRepository(EventDbContext context) : base(context)
+        private readonly EventDbContext _context = context;
+
+        public async Task AddInventoriesForSessionAsync(Guid sessionId, Guid hallId, decimal defaultPrice, string currency = "BDT", CancellationToken cancellationToken = default)
         {
-            _context = context;
+            var seats = await _context.Seats
+                .Where(x => x.HallId == hallId && x.IsActive)
+                .ToListAsync(cancellationToken);
+
+            var inventories = seats.Select(seat => new EventSeatInventory
+            {
+                Id = Guid.NewGuid(),
+                EventSessionId = sessionId,
+                SeatId = seat.SeatId,
+                Status = SeatInventoryStatus.Available,
+                Price = defaultPrice,
+                Currency = currency
+
+            });
+            await _context.EventSeatInventories.AddRangeAsync(inventories, cancellationToken);
         }
 
         public async Task ConfirmSeats(Guid sessionId, Guid bookingId, Guid userId, IEnumerable<Guid> seatIds)

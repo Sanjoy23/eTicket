@@ -8,14 +8,9 @@ using MediatR;
 
 namespace Event.API.Application.Sessions.Handlers
 {
-    public class LockSessionSeatsHandler : IRequestHandler<LockSessionSeatsCommand, SeatLockResultDto>
+    public class LockSessionSeatsHandler(IUnitOfWork unitOfWork) : IRequestHandler<LockSessionSeatsCommand, SeatLockResultDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public LockSessionSeatsHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<SeatLockResultDto> Handle(LockSessionSeatsCommand request, CancellationToken cancellationToken)
         {
@@ -25,7 +20,7 @@ namespace Event.API.Application.Sessions.Handlers
             if (request.UserId == Guid.Empty)
                 throw new ArgumentException("UserId is required.");
 
-            var seatIds = request.SeatIds?.Distinct().ToArray() ?? Array.Empty<Guid>();
+            var seatIds = request.SeatIds?.Distinct().ToArray() ?? [];
             if (seatIds.Length == 0)
                 throw new ArgumentException("At least one seat id must be provided.");
 
@@ -33,8 +28,8 @@ namespace Event.API.Application.Sessions.Handlers
                 throw new ArgumentException("LockDurationMinutes must be greater than zero.");
 
             var session = await _unitOfWork.EventsSession.GetById(request.SessionId);
-            if (session == null)
-                throw new KeyNotFoundException($"Session with ID {request.SessionId} not found.");
+           
+            ArgumentNullException.ThrowIfNull(session);
 
             if (session.Status == SessionStatus.Cancelled)
                 throw new InvalidOperationException("Cannot lock seats for a cancelled session.");
@@ -92,7 +87,7 @@ namespace Event.API.Application.Sessions.Handlers
                 EventSessionId = request.SessionId,
                 UserId = request.UserId,
                 LockedUntilUtc = lockedUntilUtc,
-                SeatIds = inventories.Select(inv => inv.SeatId).ToList()
+                SeatIds =  [..inventories.Select(inv => inv.SeatId)]//inventories.Select(inv => inv.SeatId).ToList()
             };
         }
     }

@@ -5,6 +5,6 @@ namespace Event.API.Models.DTOs
         public Guid EventSessionId { get; init; }
         public Guid UserId { get; init; }
         public DateTime LockedUntilUtc { get; init; }
-        public IReadOnlyCollection<Guid> SeatIds { get; init; } = Array.Empty<Guid>();
+        public IReadOnlyCollection<Guid> SeatIds { get; init; } = [];
     }
 }
