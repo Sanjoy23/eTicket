@@ -4,22 +4,14 @@ using MediatR;
 
 namespace Event.API.Application.Venues.Handlers
 {
-    public class VenueUpdatedHandler : IRequestHandler<UpdateVenueCommand, Unit>
+    public class VenueUpdatedHandler(IUnitOfWork unitOfWork) : IRequestHandler<UpdateVenueCommand, Unit>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public VenueUpdatedHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<Unit> Handle(UpdateVenueCommand request, CancellationToken cancellationToken)
         {
-            var venue = await _unitOfWork.Venues.GetById(request.VenueId);
-            if (venue == null)
-            {
-                throw new KeyNotFoundException($"Venue with ID {request.VenueId} not found.");
-            }
+            var venue = await _unitOfWork.Venues.GetById(request.VenueId)
+                ?? throw new KeyNotFoundException($"Venue with ID {request.VenueId} not found.");
 
             venue.VenueName = request.VenueName;
             venue.Description = request.Description;

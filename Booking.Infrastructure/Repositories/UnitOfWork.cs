@@ -3,14 +3,9 @@ using Booking.Infrastructure.Data;
 
 namespace Booking.Infrastructure.Repositories
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork(BookingDbContext context) : IUnitOfWork
     {
-        private readonly BookingDbContext _context;
-
-        public UnitOfWork(BookingDbContext context)
-        {
-            _context = context;
-        }
+        private readonly BookingDbContext _context = context;
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -20,6 +15,7 @@ namespace Booking.Infrastructure.Repositories
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
         protected virtual void Dispose(bool disposing)
         {

@@ -9,7 +9,7 @@ namespace Booking.Domain.Entities
 
         public Guid BookingId { get; set; }
 
-        public EventBooking Booking { get; set; }
+        public EventBooking Booking { get; set; } = null!;
 
         public Guid EventSeatId { get; set; }
     }

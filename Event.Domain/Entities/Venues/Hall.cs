@@ -20,6 +20,6 @@ namespace Event.Domain.Entities.Venues
 
         public bool IsActive { get; set; } = true;
 
-        public ICollection<Seat> Seats { get; set; } = new List<Seat>();
+        public ICollection<Seat> Seats { get; set; } = [];
     }
 }

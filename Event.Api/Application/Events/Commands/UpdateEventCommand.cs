@@ -6,8 +6,8 @@ namespace Event.API.Application.Events.Commands
     public class UpdateEventCommand : IRequest<Unit>
     {
         public Guid EventId { get; set; }
-        public string? EventName { get; set; }
-        public string? Description { get; set; }
+        public string EventName { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int TotalSeats { get; set; }

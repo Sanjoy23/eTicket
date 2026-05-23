@@ -6,7 +6,7 @@ namespace Booking.Infrastructure.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private BookingDbContext _context;
+        private readonly BookingDbContext _context;
         private readonly DbSet<T> _dbSet;
 
         public GenericRepository(BookingDbContext context)

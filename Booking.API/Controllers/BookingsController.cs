@@ -6,14 +6,10 @@ namespace Booking.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BookingsController : ControllerBase
+    public class BookingsController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _mediator = mediator;
 
-        public BookingsController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
         [HttpPost("book")]
         public IActionResult Booking([FromBody] BookSeatsCommand command)
         {

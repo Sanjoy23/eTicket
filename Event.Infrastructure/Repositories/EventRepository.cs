@@ -5,10 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Event.Infrastructure.Repositories
 {
-    public class EventRepository : GenericRepository<EventEntity>, IEventRepository
+    public class EventRepository(EventDbContext context) : GenericRepository<EventEntity>(context), IEventRepository
     {
-        public EventRepository(EventDbContext context) : base(context)
-        {
-        }
+        
     }
 }

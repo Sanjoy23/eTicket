@@ -14,7 +14,7 @@ namespace Event.Domain.Entities.Seating
         [Required]
         public Guid VenueId { get; set; }
 
-        public Venue Venue { get; set; }
+        public Venue Venue { get; set; } = null!;
 
         public Hall Hall { get; set; } = default!;
 

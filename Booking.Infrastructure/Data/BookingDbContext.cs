@@ -3,11 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Booking.Infrastructure.Data
 {
-    public class BookingDbContext : DbContext
+    public class BookingDbContext(DbContextOptions<BookingDbContext> options) : DbContext(options)
     {
-        public BookingDbContext(DbContextOptions<BookingDbContext> options) : base(options)
-        {
-        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

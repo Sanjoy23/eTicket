@@ -6,13 +6,9 @@ using System.Linq;
 
 namespace Event.Infrastructure.Repositories
 {
-    public class SeatLockRepository : GenericRepository<SeatLock>, ISeatLockRepository
+    public class SeatLockRepository(EventDbContext context)
+        : GenericRepository<SeatLock>(context), ISeatLockRepository
     {
-        //private readonly EventDbContext _context;
-        public SeatLockRepository(EventDbContext context) : base(context)
-        {
-           // _context = context;
-        }
 
         public async Task<IEnumerable<SeatLock>> GetActiveLocks(Guid sessionId, IEnumerable<Guid> seatIds, DateTime utcNow)
         {

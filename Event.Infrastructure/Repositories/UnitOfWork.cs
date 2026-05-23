@@ -3,32 +3,23 @@ using Event.Infrastructure.Data;
 
 namespace Event.Infrastructure.Repositories
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork(
+        EventDbContext context,
+        IEventRepository eventRepository,
+        IVenueRepository venueRepository,
+        IEventSessionRepository eventSessionRepository,
+        IEventSeatInventoryRepository eventSeatInventoryRepository,
+        ISeatLockRepository seatLockRepository) : IUnitOfWork
     {
-        private readonly EventDbContext _context;
+        private readonly EventDbContext _context = context;
 
-        public IEventRepository Events { get; }
-        public IVenueRepository Venues { get; }
+        public IEventRepository Events { get; } = eventRepository;
+        public IVenueRepository Venues { get; } = venueRepository;
 
-        public IEventSessionRepository EventsSession { get; }
-        public IEventSeatInventoryRepository EventSeatInventories { get; }
-        public ISeatLockRepository SeatLocks { get; }
+        public IEventSessionRepository EventsSession { get; } = eventSessionRepository;
+        public IEventSeatInventoryRepository EventSeatInventories { get; } = eventSeatInventoryRepository;
+        public ISeatLockRepository SeatLocks { get; } = seatLockRepository;
 
-        public UnitOfWork(
-            EventDbContext context,
-            IEventRepository eventRepository,
-            IVenueRepository venueRepository,
-            IEventSessionRepository eventSessionRepository,
-            IEventSeatInventoryRepository eventSeatInventoryRepository,
-            ISeatLockRepository seatLockRepository)
-        {
-            _context = context;
-            Events = eventRepository;
-            Venues = venueRepository;
-            EventsSession = eventSessionRepository;
-            EventSeatInventories = eventSeatInventoryRepository;
-            SeatLocks = seatLockRepository;
-        }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -38,6 +29,7 @@ namespace Event.Infrastructure.Repositories
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
         protected virtual void Dispose(bool disposing) {
             if (disposing) { 

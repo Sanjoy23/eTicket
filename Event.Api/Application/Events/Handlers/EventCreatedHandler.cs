@@ -6,14 +6,9 @@ using MediatR;
 
 namespace Event.API.Application.Events.Handlers
 {
-    public class EventCreatedHandler : IRequestHandler<CreateEventCommand, Guid>
+    public class EventCreatedHandler(IUnitOfWork unitOfWork) : IRequestHandler<CreateEventCommand, Guid>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public EventCreatedHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<Guid> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {

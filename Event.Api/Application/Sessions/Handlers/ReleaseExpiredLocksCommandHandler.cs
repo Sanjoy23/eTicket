@@ -5,14 +5,9 @@ using MediatR;
 
 namespace Event.API.Application.Sessions.Handlers
 {
-    public class ReleaseExpiredLocksCommandHandler : IRequestHandler<ReleaseExpiredLocksCommand, Unit>
+    public class ReleaseExpiredLocksCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<ReleaseExpiredLocksCommand, Unit>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public ReleaseExpiredLocksCommandHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<Unit> Handle(ReleaseExpiredLocksCommand request, CancellationToken cancellationToken)
         {

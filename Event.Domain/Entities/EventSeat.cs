@@ -13,12 +13,12 @@ namespace Event.Domain.Entities
         [Required]
         public Guid EventId { get; set; }
 
-        public EventEntity Event { get; set; }
+        public EventEntity Event { get; set; } = null!;
 
         [Required]
         public Guid SeatId { get; set; }
 
-        public Seat Seat { get; set; }
+        public Seat Seat { get; set; } = null!;
 
         public SeatBookingStatus Status { get; set; }
 

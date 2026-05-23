@@ -19,6 +19,6 @@ namespace Booking.Domain.Entities
             = DateTime.UtcNow;
 
         public ICollection<EventBookingSeat> BookingSeats { get; set; }
-            = new List<EventBookingSeat>();
+            = [];
     }
 }

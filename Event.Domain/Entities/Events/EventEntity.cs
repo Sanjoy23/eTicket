@@ -14,14 +14,13 @@ namespace Event.Domain.Entities.Events
         public string Description { get; set; } = string.Empty;
         [Required]
         public EventType Type { get; set; }
-        public ICollection<EventPerformer> EventPerformers { get; set; } = new List<EventPerformer>();
+        public ICollection<EventPerformer> EventPerformers { get; set; } = [];
         [Required]
         public EventStatus Status { get; set; } 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public bool IsDeleted { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public ICollection<EventSeat> EventSeats { get; set; }
-        = new List<EventSeat>();
+        public ICollection<EventSeat> EventSeats { get; set; } = [];
     }
 }

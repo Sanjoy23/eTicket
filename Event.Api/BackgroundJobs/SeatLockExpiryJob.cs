@@ -3,15 +3,10 @@ using MediatR;
 
 namespace Event.API.BackgroundJobs
 {
-    public class SeatLockExpiryJob : BackgroundService
+    public class SeatLockExpiryJob(IServiceScopeFactory scopeFactory) : BackgroundService
     {
-        private readonly IServiceScopeFactory _scopeFactory;
-        private readonly PeriodicTimer _timer = new PeriodicTimer(TimeSpan.FromMinutes(2));
-
-        public SeatLockExpiryJob(IServiceScopeFactory scopeFactory)
-        {
-            _scopeFactory = scopeFactory;
-        }
+        private readonly IServiceScopeFactory _scopeFactory = scopeFactory;
+        private readonly PeriodicTimer _timer = new(TimeSpan.FromMinutes(2));
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -25,6 +20,7 @@ namespace Event.API.BackgroundJobs
         public override void Dispose()
         {
             _timer.Dispose();
+            GC.SuppressFinalize(this);
             base.Dispose();
         }
     }

@@ -2,12 +2,7 @@
 using Event.Domain.Specifications;
 using Event.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Event.Infrastructure.Repositories
 {
@@ -21,7 +16,7 @@ namespace Event.Infrastructure.Repositories
             _context = context;
             _dbSet = _context.Set<T>();
         }
-        public async Task<T> GetById(Guid id)
+        public async Task<T?> GetById(Guid id)
         {
             return await _dbSet.FindAsync(id);
         }
@@ -51,7 +46,7 @@ namespace Event.Infrastructure.Repositories
             return await _dbSet.AnyAsync(predicate);
         }
 
-        public async Task<T> GetBySpec(ISpecification<T> spec)
+        public async Task<T?> GetBySpec(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).FirstOrDefaultAsync();
         }

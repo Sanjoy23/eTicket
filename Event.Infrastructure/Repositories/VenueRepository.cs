@@ -4,10 +4,8 @@ using Event.Infrastructure.Data;
 
 namespace Event.Infrastructure.Repositories
 {
-    public class VenueRepository : GenericRepository<Venue>, IVenueRepository
+    public class VenueRepository(EventDbContext context) : GenericRepository<Venue>(context), IVenueRepository
     {
-        public VenueRepository(EventDbContext context) : base(context)
-        {
-        }
+       
     }
 }

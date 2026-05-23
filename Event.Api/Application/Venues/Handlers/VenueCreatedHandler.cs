@@ -5,14 +5,9 @@ using MediatR;
 
 namespace Event.API.Application.Venues.Handlers
 {
-    public class VenueCreatedHandler : IRequestHandler<CreateVenueCommand, Guid>
+    public class VenueCreatedHandler(IUnitOfWork unitOfWork) : IRequestHandler<CreateVenueCommand, Guid>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public VenueCreatedHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<Guid> Handle(CreateVenueCommand request, CancellationToken cancellationToken)
         {

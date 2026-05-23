@@ -19,7 +19,7 @@ namespace Event.Domain.Entities
 
         public string? ImageUrl { get; set; }
 
-        public ICollection<EventPerformer> EventPerformers { get; set; } = new List<EventPerformer>();
+        public ICollection<EventPerformer> EventPerformers { get; set; } = [];
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public bool IsDeleted { get; set; }

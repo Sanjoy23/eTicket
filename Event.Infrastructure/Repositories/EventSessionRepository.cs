@@ -6,11 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Event.Infrastructure.Repositories
 {
-    public class EventSessionRepository : GenericRepository<EventSession>, IEventSessionRepository
+    public class EventSessionRepository(EventDbContext context) 
+        : GenericRepository<EventSession>(context), IEventSessionRepository
     {
-        public EventSessionRepository(EventDbContext context) : base(context)
-        {
-        }
 
         public async Task<IEnumerable<EventSession>> GetUpcomingSessionsByVenueId(Guid venueId, DateTime now)
         {

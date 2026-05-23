@@ -4,11 +4,11 @@ namespace Event.API.Application.Venues.Commands
 {
     public class CreateVenueCommand : IRequest<Guid>
     {
-        public string? VenueName { get; set; }
-        public string? Description { get; set; }
+        public string VenueName { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public int Capacity { get; set; }
-        public string? Address { get; set; }
-        public string? City { get; set; }
-        public string? Country { get; set; }
+        public string Address { get; set; } = string.Empty;
+        public string City { get; set; } = string.Empty;
+        public string Country { get; set; } = string.Empty;
     }
 }

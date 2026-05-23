@@ -5,22 +5,15 @@ using MediatR;
 
 namespace Event.API.Application.Events.Handlers
 {
-    public class EventUpdatedHandler : IRequestHandler<UpdateEventCommand, Unit>
+    public class EventUpdatedHandler(IUnitOfWork unitOfWork) : IRequestHandler<UpdateEventCommand, Unit>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public EventUpdatedHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<Unit> Handle(UpdateEventCommand request, CancellationToken cancellationToken)
         {
-            var eventEntity = await _unitOfWork.Events.GetById(request.EventId);
-            if (eventEntity == null)
-            {
+            var eventEntity = await _unitOfWork.Events.GetById(request.EventId) ??
                 throw new KeyNotFoundException($"Event with ID {request.EventId} not found.");
-            }
+            
 
             if (eventEntity.Status == EventStatus.Cancelled || eventEntity.Status == EventStatus.Completed)
             {

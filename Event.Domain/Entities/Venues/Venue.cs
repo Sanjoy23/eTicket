@@ -22,7 +22,7 @@ namespace Event.Domain.Entities.Venues
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public bool IsDeleted { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public ICollection<EventEntity> Events { get; set; } = new List<EventEntity>();
-        public ICollection<Seat> Seats { get; set; } = new List<Seat>();
+        public ICollection<EventEntity> Events { get; set; } = [];
+        public ICollection<Seat> Seats { get; set; } = [];
     }
 }

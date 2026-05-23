@@ -1,11 +1,9 @@
-using Microsoft.EntityFrameworkCore;
-using Booking.Infrastructure.Data;
-using Booking.API.Services;
 using Booking.API.Interfaces;
-using MediatR;
-using Booking.Domain.Repositories;
-using Booking.Infrastructure.Repositories;
+using Booking.API.Services;
+using Booking.Infrastructure.Data;
 using Booking.Infrastructure.Extensions;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
