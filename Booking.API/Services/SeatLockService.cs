@@ -2,27 +2,24 @@
 
 namespace Booking.API.Services
 {
-    public class SeatLockService : ISeatLockService
+    public class SeatLockService(IHttpClientFactory httpClientFactory) : ISeatLockService
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
 
-        public SeatLockService(IHttpClientFactory  httpClientFactory)
-        {
-            _httpClientFactory = httpClientFactory;
-        }
-
-        public async Task LockSeatsAsync(Guid userId, Guid sessionId, Guid bookingId, List<Guid> seatIds, CancellationToken cancellationToken)
+        public async Task LockSeatsAsync(Guid userId, Guid sessionId, List<Guid> seatIds, CancellationToken cancellationToken)
         {
             var client = _httpClientFactory.CreateClient("EventService");
             var request = new
             {
-                UserId = userId,
-                BookingId = bookingId,
                 SessionId = sessionId,
+                UserId = userId,
                 SeatIds = seatIds,
+                LockDurationMinutes = 5
             };
 
-            var response = await client.PostAsJsonAsync($"api/sessions/{sessionId:guid}/seats/lock", request,cancellationToken);
+            var response = await client.PostAsJsonAsync($"api/Seats/sessions/{sessionId}/seats/lock", request,cancellationToken);
+            var content = await response.Content.ReadAsStringAsync(cancellationToken);
+            Console.WriteLine($"Status: {response.StatusCode}, Body: {content}");
 
             if (!response.IsSuccessStatusCode) { 
                 var error = await response.Content.ReadAsStringAsync(cancellationToken);

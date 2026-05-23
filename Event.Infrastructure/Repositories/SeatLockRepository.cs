@@ -39,5 +39,10 @@ namespace Event.Infrastructure.Repositories
                     x.EventSessionId == sessionId &&
                     seatIds.Contains(x.SeatId)).ToListAsync();
         }
+
+        public async Task<IEnumerable<SeatLock>> GetExpiredLocks(DateTime utcNow)
+        {
+            return await _dbSet.Where(x => x.LockedUntilUtc <  utcNow).ToListAsync();
+        }
     }
 }

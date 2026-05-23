@@ -76,6 +76,7 @@ namespace Event.API.Application.Sessions.Handlers
                         UserId = request.UserId,
                         LockedUntilUtc = lockedUntilUtc,
                         CreatedAtUtc = utcNow
+                        
                     });
                 }
             }

@@ -6,8 +6,8 @@ namespace Event.API.Models.DTOs
     {
         public Guid EventSessionId { get; init; }
         public Guid EventId { get; init; }
-        public string VenueName { get; init; }
-        public string HallName { get; init; }
+        public string? VenueName { get; init; }
+        public string? HallName { get; init; }
         public DateTime StartTimeUtc { get; init; }
         public DateTime EndTimeUtc { get; init; }
         public SessionStatus Status { get; init; }

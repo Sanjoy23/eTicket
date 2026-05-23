@@ -25,52 +25,6 @@ namespace Event.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Event.Domain.Entities.Booking", b =>
-                {
-                    b.Property<Guid>("BookingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("BookingId");
-
-                    b.HasIndex("EventId");
-
-                    b.ToTable("Bookings");
-                });
-
-            modelBuilder.Entity("Event.Domain.Entities.BookingSeat", b =>
-                {
-                    b.Property<Guid>("BookingSeatId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("BookingId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("EventSeatId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("BookingSeatId");
-
-                    b.HasIndex("BookingId");
-
-                    b.HasIndex("EventSeatId");
-
-                    b.ToTable("BookingsSeats");
-                });
-
             modelBuilder.Entity("Event.Domain.Entities.EventEntity", b =>
                 {
                     b.Property<Guid>("EventId")
@@ -269,36 +223,6 @@ namespace Event.Infrastructure.Migrations
                     b.ToTable("Venues");
                 });
 
-            modelBuilder.Entity("Event.Domain.Entities.Booking", b =>
-                {
-                    b.HasOne("Event.Domain.Entities.EventEntity", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-                });
-
-            modelBuilder.Entity("Event.Domain.Entities.BookingSeat", b =>
-                {
-                    b.HasOne("Event.Domain.Entities.Booking", "Booking")
-                        .WithMany("BookingSeats")
-                        .HasForeignKey("BookingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Event.Domain.Entities.EventSeat", "EventSeat")
-                        .WithMany()
-                        .HasForeignKey("EventSeatId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Booking");
-
-                    b.Navigation("EventSeat");
-                });
-
             modelBuilder.Entity("Event.Domain.Entities.EventEntity", b =>
                 {
                     b.HasOne("Event.Domain.Entities.Venue", "Venue")
@@ -357,11 +281,6 @@ namespace Event.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Venue");
-                });
-
-            modelBuilder.Entity("Event.Domain.Entities.Booking", b =>
-                {
-                    b.Navigation("BookingSeats");
                 });
 
             modelBuilder.Entity("Event.Domain.Entities.EventEntity", b =>

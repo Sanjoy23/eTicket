@@ -5,9 +5,9 @@ namespace Booking.Infrastructure.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly EventDbContext _context;
+        private readonly BookingDbContext _context;
 
-        public UnitOfWork(EventDbContext context)
+        public UnitOfWork(BookingDbContext context)
         {
             _context = context;
         }

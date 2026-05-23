@@ -167,13 +167,6 @@ namespace Event.Infrastructure.Migrations
                 nullable: false,
                 defaultValue: false);
 
-            migrationBuilder.AddColumn<Guid>(
-                name: "UserId",
-                table: "Bookings",
-                type: "uuid",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
-
             migrationBuilder.CreateTable(
                 name: "Halls",
                 columns: table => new
@@ -226,12 +219,6 @@ namespace Event.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tickets", x => x.TicketId);
-                    table.ForeignKey(
-                        name: "FK_Tickets_BookingsSeats_BookingSeatId",
-                        column: x => x.BookingSeatId,
-                        principalTable: "BookingsSeats",
-                        principalColumn: "BookingSeatId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -388,11 +375,6 @@ namespace Event.Infrastructure.Migrations
                 columns: new[] { "EventSessionId", "SeatId" },
                 unique: true);
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Tickets_BookingSeatId",
-                table: "Tickets",
-                column: "BookingSeatId");
-
             migrationBuilder.AddForeignKey(
                 name: "FK_Events_Venues_VenueId",
                 table: "Events",
@@ -502,10 +484,6 @@ namespace Event.Infrastructure.Migrations
             migrationBuilder.DropColumn(
                 name: "IsDeleted",
                 table: "Events");
-
-            migrationBuilder.DropColumn(
-                name: "UserId",
-                table: "Bookings");
 
             migrationBuilder.RenameColumn(
                 name: "UpdatedAt",

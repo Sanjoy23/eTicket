@@ -10,5 +10,6 @@ namespace Event.Domain.Repositories
         Task<IEnumerable<SeatLock>> GetActiveLocks(Guid sessionId, IEnumerable<Guid> seatIds, DateTime utcNow);
         Task<IEnumerable<SeatLock>> GetActiveLocksForUser(Guid sessionId, Guid userId, IEnumerable<Guid> seatIds, DateTime utcNow);
         Task<List<SeatLock>> GetBySessionIdAndSeatIds(Guid sessionId, IEnumerable<Guid> seatIds);
+        Task<IEnumerable<SeatLock>> GetExpiredLocks(DateTime utcNow);
     }
 }

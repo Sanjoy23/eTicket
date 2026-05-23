@@ -15,9 +15,9 @@ namespace Booking.API.Application.Handlers
 
         public async Task<Guid> Handle(BookSeatsCommand request, CancellationToken cancellationToken)
         {
-            var bookingId = Guid.NewGuid();
-            await _seatLockService.LockSeatsAsync(request.userId, request.SessionId, bookingId, request.SeatIds.ToList(), cancellationToken);
+            await _seatLockService.LockSeatsAsync(request.userId, request.SessionId, request.SeatIds.ToList(), cancellationToken);
 
+            var bookingId = Guid.NewGuid();
             return bookingId;
         }
     }

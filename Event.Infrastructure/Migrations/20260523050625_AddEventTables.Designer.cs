@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Event.Infrastructure.Migrations
 {
     [DbContext(typeof(EventDbContext))]
-    [Migration("20260514080209_Update Schema")]
-    partial class UpdateSchema
+    [Migration("20260523050625_AddEventTables")]
+    partial class AddEventTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -135,12 +135,6 @@ namespace Event.Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("bytea");
 
                     b.Property<Guid>("SeatId")
                         .HasColumnType("uuid");
@@ -310,6 +304,9 @@ namespace Event.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BookingId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAtUtc")

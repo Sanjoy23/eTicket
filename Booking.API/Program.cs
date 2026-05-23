@@ -1,17 +1,22 @@
-
 using Microsoft.EntityFrameworkCore;
 using Booking.Infrastructure.Data;
 using Booking.API.Services;
 using Booking.API.Interfaces;
 using MediatR;
+using Booking.Domain.Repositories;
+using Booking.Infrastructure.Repositories;
+using Booking.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<EventDbContext>(options =>
-options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<BookingDbContext>(options =>
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        npgsqlOptions => npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory_Booking")));
+builder.Services.AddDIServices();
 builder.Services.AddMediatR(typeof(Program));
 
 builder.Services.AddHttpClient("EventService", client =>

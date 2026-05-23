@@ -10,6 +10,6 @@ namespace Event.API.Application.Sessions.Commands
         public Guid SessionId { get; set; }
         public Guid UserId { get; set; }
         public IEnumerable<Guid> SeatIds { get; set; } = Array.Empty<Guid>();
-        public int LockDurationMinutes { get; set; } = 15;
+        public int LockDurationMinutes { get; set; } = 5;
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Event.Domain.Entities.Events;
-using Event.Domain.Entities.Seating;
 using Event.Domain.Enums;
 using Event.Domain.Repositories;
 using Event.Infrastructure.Data;

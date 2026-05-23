@@ -2,6 +2,6 @@
 {
     public interface ISeatLockService
     {
-        Task LockSeatsAsync(Guid userId, Guid sessionId, Guid bookingId, List<Guid> seatIds, CancellationToken cancellationToken);
+        Task LockSeatsAsync(Guid userId, Guid sessionId, List<Guid> seatIds, CancellationToken cancellationToken);
     }
 }

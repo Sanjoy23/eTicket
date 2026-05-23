@@ -22,7 +22,7 @@ namespace Booking.API.Controllers
         }
 
         [HttpPost("cancel")]
-        public IActionResult Cancel(Guid userId, List<Guid> SeatIds, Guid BookingId)
+        public IActionResult Cancel([FromBody] CancelSeatBookingCommand command)
         {
             return Ok();
         }

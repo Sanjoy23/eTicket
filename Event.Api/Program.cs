@@ -1,3 +1,4 @@
+using Event.API.BackgroundJobs;
 using Event.Infrastructure.Data;
 using Event.Infrastructure.Extensions;
 using MediatR;
@@ -9,9 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<EventDbContext>(options =>
-options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        npgsqlOptions => npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory_Event")));
 builder.Services.AddMediatR(typeof(Program));
 builder.Services.AddDIServices();
+builder.Services.AddHostedService<SeatLockExpiryJob>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
