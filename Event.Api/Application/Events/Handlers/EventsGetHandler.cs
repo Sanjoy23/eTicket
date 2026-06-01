@@ -6,14 +6,9 @@ using System.Linq;
 
 namespace Event.API.Application.Events.Handlers
 {
-    public class EventsGetHandler : IRequestHandler<GetEventsQuery, IEnumerable<EventDto>>
+    public class EventsGetHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetEventsQuery, IEnumerable<EventDto>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public EventsGetHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<IEnumerable<EventDto>> Handle(GetEventsQuery request, CancellationToken cancellationToken)
         {

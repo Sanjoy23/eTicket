@@ -1,6 +1,7 @@
 ﻿using Event.API.Application.Sessions.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Event.API.Controllers
@@ -26,11 +27,11 @@ namespace Event.API.Controllers
         }
 
         [HttpPost("sessions/{sessionId:guid}/seats/release")]
-        public async Task<IActionResult> ReleaseSeats(Guid sessionId, [FromBody] ReleaseSessionSeatsCommand command)
+        public async Task<Results<NoContent, NotFound<string>>> ReleaseSeats(Guid sessionId, [FromBody] ReleaseSessionSeatsCommand command)
         {
             command.SessionId = sessionId;
             await _mediator.Send(command);
-            return NoContent();
+            return TypedResults.NoContent();
         }
     }
 }

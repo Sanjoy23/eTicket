@@ -8,6 +8,6 @@ namespace Event.API.Application.Sessions.Commands
     {
         public Guid SessionId { get; set; }
         public Guid UserId { get; set; }
-        public IEnumerable<Guid> SeatIds { get; set; } = Array.Empty<Guid>();
+        public IEnumerable<Guid> SeatIds { get; set; } = [];
     }
 }

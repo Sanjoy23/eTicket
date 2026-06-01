@@ -3,9 +3,11 @@ using Booking.Infrastructure.Data;
 
 namespace Booking.Infrastructure.Repositories
 {
-    public class UnitOfWork(BookingDbContext context) : IUnitOfWork
+    public class UnitOfWork(BookingDbContext context
+        , IBookingRepository bookingRepository) : IUnitOfWork
     {
         private readonly BookingDbContext _context = context;
+        public IBookingRepository Bookings { get; } = bookingRepository;
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

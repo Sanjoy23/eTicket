@@ -9,16 +9,12 @@
   <ItemGroup>
 	  <PackageReference Include="MediatR" Version="8.0.0" />
 	  <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0"/>
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Booking.Infrastructure\Booking.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Application\Queries\" />
   </ItemGroup>
 
 </Project>

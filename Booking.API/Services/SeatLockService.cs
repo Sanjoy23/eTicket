@@ -23,7 +23,25 @@ namespace Booking.API.Services
 
             if (!response.IsSuccessStatusCode) { 
                 var error = await response.Content.ReadAsStringAsync(cancellationToken);
-                throw new Exception($"Seat lock failed{error}");
+                throw new Exception($"Seat lock failed {error}");
+            }
+        }
+        public async Task ReleaseSeatsAsync(Guid sessionId, Guid userId, List<Guid> seatIds, CancellationToken cancellationToken)
+        {
+            var client = _httpClientFactory.CreateClient("EventService");
+            var request = new
+            {
+                SessionId = sessionId,
+                UserId = userId,
+                SeatIds = seatIds
+            };
+
+            var response = await client.PostAsJsonAsync($"api/Seats/sessions/{sessionId}/seats/release", request, cancellationToken);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync(cancellationToken);
+                throw new Exception($"Seat release failed {error}");
             }
         }
     }

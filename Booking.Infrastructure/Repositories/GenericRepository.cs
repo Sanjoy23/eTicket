@@ -14,5 +14,10 @@ namespace Booking.Infrastructure.Repositories
             _context = context;
             _dbSet = _context.Set<T>();
         }
+
+        public async Task<T?> GetById(Guid id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
     }
 }

@@ -1,6 +1,10 @@
 ﻿using Booking.API.Application.Commands;
+using Booking.API.Application.Queries;
+using Booking.API.Dtos;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Booking.API.Controllers
 {
@@ -11,21 +15,25 @@ namespace Booking.API.Controllers
         private readonly IMediator _mediator = mediator;
 
         [HttpPost("book")]
-        public IActionResult Booking([FromBody] BookSeatsCommand command)
+        public async Task<IActionResult> Booking([FromBody] BookSeatsCommand command)
         {
-            _mediator.Send(command);
-            return Ok();
+            var result = await _mediator.Send(command);
+            return result == Guid.Empty ? BadRequest("Booking Failed") : Ok(result);
         }
 
         [HttpPost("cancel")]
-        public IActionResult Cancel([FromBody] CancelSeatBookingCommand command)
+        public async Task<Results<NoContent, NotFound<string>>> Cancel([FromBody] CancelSeatBookingCommand command)
         {
-            return Ok();
+            await _mediator.Send(command);
+            return TypedResults.NoContent();
         }
         [HttpGet("{bookingId}")]
-        public IActionResult Get(Guid bookingId)
+        public async Task<Results<Ok<BookingDto>, NotFound>> Get(Guid bookingId)
         {
-            return Ok();
+            var result = await _mediator.Send(new BookingByIdQuery { BookingId = bookingId });
+            return result is null 
+                ? TypedResults.NotFound()
+                : TypedResults.Ok(result);
         }
     }
 }
