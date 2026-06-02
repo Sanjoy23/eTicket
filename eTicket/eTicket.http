@@ -1,6 +1,0 @@
-@eTicket_HostAddress = http://localhost:5173
-
-GET {{eTicket_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
