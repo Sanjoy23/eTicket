@@ -21,7 +21,12 @@ builder.Services.AddHttpClient("EventService", client =>
 {
     client.BaseAddress = new Uri("http://localhost:5111/");
 });
+builder.Services.AddHttpClient("PaymentService", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5201/");
+});
 builder.Services.AddScoped<ISeatLockService, SeatLockService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

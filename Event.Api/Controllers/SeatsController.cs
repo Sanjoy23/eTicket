@@ -20,8 +20,9 @@ namespace Event.API.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
-        [HttpPost("Seats/sessions/{sessionId}/seats/confirm")]
+        [HttpPost("sessions/{sessionId:guid}/seats/confirm")]
         public async Task<IActionResult> ConfirmSeats(Guid sessionId, ConfirmSeatsCommand command ) {
+            command.SessionId = sessionId;
             var result = await _mediator.Send(command);
             return Ok(result);
         }

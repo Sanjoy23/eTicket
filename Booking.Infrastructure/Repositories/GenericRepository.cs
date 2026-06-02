@@ -19,5 +19,10 @@ namespace Booking.Infrastructure.Repositories
         {
             return await _dbSet.FindAsync(id);
         }
+
+        public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
+        {
+            await _dbSet.AddAsync(entity, cancellationToken);
+        }
     }
 }
