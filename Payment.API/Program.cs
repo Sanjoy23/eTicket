@@ -1,8 +1,8 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Payment.API.Infrastructure.Data;
-using Payment.API.Interfaces;
-using Payment.API.Services;
+using ePayment.API.Infrastructure.Data;
+using ePayment.API.Interfaces;
+using ePayment.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

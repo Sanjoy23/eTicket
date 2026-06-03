@@ -43,12 +43,12 @@ namespace Booking.API.Application.Handlers
                     TotalAmount = request.TotalAmount,
                     Status = BookingStatus.Pending,
                     CreatedAt = DateTime.UtcNow,
-                    BookingSeats = seatIds.Select(seatId => new EventBookingSeat
+                    BookingSeats = [..seatIds.Select(seatId => new EventBookingSeat
                     {
                         BookingSeatId = Guid.NewGuid(),
                         BookingId = bookingId,
                         EventSeatId = seatId
-                    }).ToList()
+                    })]
                 };
 
                 await _unitOfWork.Bookings.AddAsync(booking, cancellationToken);
