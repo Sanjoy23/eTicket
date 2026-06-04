@@ -1,5 +1,4 @@
 ﻿using Identity.API.Models;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,20 +11,15 @@ namespace Identity.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController(UserManager<AppUser> userManager, 
+        SignInManager<AppUser> signInManager, 
+        ITokenService tokenService, 
+        IMapper mapper) : ControllerBase
     {
-        private readonly SignInManager<AppUser> _signInManager;
-        private readonly ITokenService _tokenService;
-        private readonly IMapper _mapper;
-        private readonly UserManager<AppUser> _userManager;
-
-        public AuthController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _tokenService = tokenService;
-            _mapper = mapper;
-        }
+        private readonly SignInManager<AppUser> _signInManager = signInManager;
+        private readonly ITokenService _tokenService = tokenService;
+        private readonly IMapper _mapper = mapper;
+        private readonly UserManager<AppUser> _userManager = userManager;
 
         [Authorize]
         [HttpGet]

@@ -11,6 +11,5 @@ namespace Identity.API.Data
         {
             base.OnModelCreating(builder);
         }
-        //public DbSet<ApplicationUser> Users { get; set; }
     }
 }
