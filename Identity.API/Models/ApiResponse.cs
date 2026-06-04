@@ -1,18 +1,12 @@
 ﻿namespace Identity.API.Models
 {
-    public class ApiResponse
+    public class ApiResponse(int statusCode, string message = null!)
     {
-        public ApiResponse(int statusCode, string message = null)
-        {
-            StatusCode = statusCode;
-            Message = message ?? GetDefaultMessageForStatusCode(statusCode);
-        }
-
-        public int StatusCode { get; set; }
-        public string Message { get; set; }
+        public int StatusCode { get; set; } = statusCode;
+        public string Message { get; set; } = message ?? GetDefaultMessageForStatusCode(statusCode);
 
 
-        private string? GetDefaultMessageForStatusCode(int statusCode)
+        private static string GetDefaultMessageForStatusCode(int statusCode)
         {
             return statusCode switch
             {
@@ -20,7 +14,7 @@
                 401 => "Authorized, you are not",
                 404 => "Resource found, it was not",
                 500 => "Errors are the path to the dark side",
-                _ => null
+                _ => "Internal issue"
             };
         }
     }

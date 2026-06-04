@@ -1,7 +1,6 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ePayment.API.Infrastructure.Data;
-using ePayment.API.Interfaces;
 using ePayment.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +10,7 @@ builder.Services.AddDbContext<PaymentDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
         npgsqlOptions => npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory_Payment")));
-builder.Services.AddScoped<IPaymentGateway, FakePaymentGateway>();
+builder.Services.AddScoped<IPaymentGateway, SslCommerzPaymentGateway>();
 builder.Services.AddMediatR(typeof(Program));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

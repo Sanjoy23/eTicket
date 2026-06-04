@@ -27,6 +27,7 @@ builder.Services.AddHttpClient("PaymentService", client =>
 });
 builder.Services.AddScoped<ISeatLockService, SeatLockService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IReceiptService, ReceiptService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
