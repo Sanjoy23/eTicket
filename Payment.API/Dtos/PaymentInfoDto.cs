@@ -1,6 +1,6 @@
-namespace Booking.API.Dtos
+﻿namespace ePayment.API.Dtos
 {
-    public class PaymentInitiateRequestDto
+    public class PaymentInfoDto
     {
         public long Id { get; set; }
         public decimal Amount { get; set; }
@@ -14,21 +14,5 @@ namespace Booking.API.Dtos
         public string Country { get; set; } = string.Empty;
         public string ProductType { get; set; } = string.Empty;
         public string ProductProfile { get; set; } = string.Empty;
-    }
-
-    public class PaymentInitiateResponseDto
-    {
-        public Guid PaymentId { get; set; }
-        public string PaymentUrl { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
-    }
-
-    public class PaymentVerifyResponseDto
-    {
-        public Guid PaymentId { get; set; }
-        public Guid BookingId { get; set; }
-        public bool IsSuccess { get; set; }
-        public string Status { get; set; } = string.Empty;
-        public string TransactionId { get; set; } = string.Empty;
     }
 }

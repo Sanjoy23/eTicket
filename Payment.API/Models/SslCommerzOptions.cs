@@ -5,6 +5,7 @@
         public string StoreId { get; set; } = string.Empty;
         public string StorePassword { get; set; } = string.Empty;
         public string BaseUrl { get; set; } = string.Empty;
+        public bool IsLive { get; set; }
         public string SuccessUrl { get; set; } = string.Empty;
         public string FailUrl { get; set; } = string.Empty;
         public string CancelUrl { get; set; } = string.Empty;

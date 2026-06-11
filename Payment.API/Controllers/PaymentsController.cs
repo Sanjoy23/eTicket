@@ -1,5 +1,7 @@
+using ePayment.API.Dtos;
 using ePayment.API.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ePayment.API.Controllers
 {
@@ -9,10 +11,25 @@ namespace ePayment.API.Controllers
     {
         private readonly IPaymentGateway _paymentGateway = paymentGateway;
 
-        //[HttpPost("InitiatePayment")]
-        //public Task<IActionResult> InitiatePaymentLink(string Id)
-        //{
-        //    return 
-        //}
+        [HttpPost("InitiatePayment")]
+        public async Task<IActionResult> InitiatePaymentLink(PaymentInfoDto paymentInfo)
+        {
+            var newPayment = new PaymentInitiateRequest
+            {
+                TotalAmount = paymentInfo.Amount,
+                Currency = paymentInfo.Currency,
+                ReceiptId = paymentInfo.Id.ToString(),
+                CustomerCity = paymentInfo.City,
+                CustomerCountry = paymentInfo.Country,
+                CustomerEmail = paymentInfo.Email,
+                CustomerPhone = paymentInfo.Phone,
+                CustomerName = paymentInfo.FullName,
+                CustomerAddress1 = paymentInfo.Address,
+                ProductCategory = paymentInfo.ProductType,
+                ProductProfile = paymentInfo.ProductProfile,  
+            };
+            var result = await _paymentGateway.InitiateAsync(newPayment, CancellationToken.None);
+            return Ok(result);
+        }
     }
 }

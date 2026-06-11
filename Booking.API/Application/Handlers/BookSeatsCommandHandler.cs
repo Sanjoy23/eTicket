@@ -67,10 +67,19 @@ namespace Booking.API.Application.Handlers
 
                 var payment = await _paymentService.InitiatePaymentAsync(new PaymentInitiateRequestDto
                 {
-                    BookingId = bookingId,
-                    UserId = request.UserId,
+                    Id = receipt.Id, 
+                    ReceiptNumber = receipt.ReceiptNumber,
                     Amount = request.TotalAmount,
-                    Currency = request.Currency
+                    Currency = request.Currency,
+                    FullName = "Test User",
+                    Email = "test@gmail.com",
+                    Phone = "01700000000",
+                    City = "Dhaka",
+                    Country = "Bangladesh",
+                    Address = "Mohammadpur",
+                    ProductType = "Theatre",
+                    ProductProfile = "General"
+                    
                 }, cancellationToken);
 
                 return new BookSeatsResponse

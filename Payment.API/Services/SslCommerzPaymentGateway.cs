@@ -8,9 +8,11 @@ namespace ePayment.API.Services
     {
         private readonly HttpClient _httpClient = httpClient;
         private readonly SslCommerzOptions _options = options.Value;
+
         public async Task<PaymentInitiateResult> InitiateAsync(PaymentInitiateRequest request, CancellationToken cancellationToken)
         {
             var transactionId = $"ETK-{Guid.NewGuid():N}";
+            var baseUrl = GetBaseUrl();
             var formData = new Dictionary<string, string>
             {
                 ["store_id"] = _options.StoreId,
@@ -24,12 +26,12 @@ namespace ePayment.API.Services
                 ["cancel_url"] = _options.CancelUrl,
                 ["ipn_url"] = _options.IpnUrl,
 
-                ["cus_name"] = "Test Customer",
-                ["cus_email"] = "test@example.com",
-                ["cus_add1"] = "Dhaka",
-                ["cus_city"] = "Dhaka",
-                ["cus_country"] = "Bangladesh",
-                ["cus_phone"] = "01700000000",
+                ["cus_name"] = request.CustomerName ?? "Test User",
+                ["cus_email"] = request.CustomerEmail ?? "test@example.com",
+                ["cus_add1"] = request.CustomerAddress1 ?? "Dhaka",
+                ["cus_city"] = request.CustomerCity ?? "Dhaka",
+                ["cus_country"] = request.CustomerCountry ?? "Bangladesh",
+                ["cus_phone"] = request.CustomerPhone ?? "01700000000",
 
                 ["shipping_method"] = "NO",
                 ["product_name"] = "E-Ticket",
@@ -37,7 +39,7 @@ namespace ePayment.API.Services
                 ["product_profile"] = "general"
             };
             var response = await _httpClient
-                .PostAsync($"{_options.BaseUrl}/gwprocess/v4/api.php",
+                .PostAsync($"{baseUrl}/gwprocess/v4/api.php",
                                             new FormUrlEncodedContent(formData),
                                             cancellationToken);
             response.EnsureSuccessStatusCode();
@@ -50,14 +52,20 @@ namespace ePayment.API.Services
 
             return new PaymentInitiateResult
             {
-                
+                Status = json.Status,
+                FailedReason = json.FailedReason,
+                SessionKey = json.SessionKey,
+                GatewayPageURL = json.GatewayPageURL,
+                StoreBanner = json.StoreBanner,
+                StoreLogo = json.StoreLogo
             };
         }
 
         public async Task<PaymentVerifyResult> VerifyAsync(string transactionId, CancellationToken cancellationToken)
         {
+            var baseUrl = GetBaseUrl();
             var url =
-            $"{_options.BaseUrl}/validator/api/merchantTransIDvalidationAPI.php" +
+            $"{baseUrl}/validator/api/merchantTransIDvalidationAPI.php" +
             $"?tran_id={transactionId}" +
             $"&store_id={_options.StoreId}" +
             $"&store_passwd={_options.StorePassword}" +
@@ -74,6 +82,18 @@ namespace ePayment.API.Services
                 TransactionId = transactionId,
                 RawResponse = rawResponse
             };
+        }
+
+        private string GetBaseUrl()
+        {
+            if (!string.IsNullOrWhiteSpace(_options.BaseUrl))
+            {
+                return _options.BaseUrl.TrimEnd('/');
+            }
+
+            return _options.IsLive
+                ? "https://securepay.sslcommerz.com"
+                : "https://sandbox.sslcommerz.com";
         }
     }
 }
