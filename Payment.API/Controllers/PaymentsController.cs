@@ -1,7 +1,6 @@
 using ePayment.API.Dtos;
 using ePayment.API.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace ePayment.API.Controllers
 {

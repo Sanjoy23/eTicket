@@ -82,6 +82,11 @@ namespace Booking.API.Application.Handlers
                     
                 }, cancellationToken);
 
+                if(payment.Status == "Failed" || payment.Status == "Cancel" )
+                {
+                    booking.Status = BookingStatus.Cancelled;
+                    await _unitOfWork.SaveChangesAsync(cancellationToken);
+                }
                 return new BookSeatsResponse
                 {
                     BookingId = bookingId,
