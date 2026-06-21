@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Booking.API\Booking.API.csproj" />
+    <ProjectReference Include="..\eTicket.ApiGateway\eTicket.ApiGateway.csproj" />
     <ProjectReference Include="..\Event.Api\Event.API.csproj" />
     <ProjectReference Include="..\Identity.API\Identity.API.csproj" />
     <ProjectReference Include="..\Payment.API\ePayment.API.csproj" />

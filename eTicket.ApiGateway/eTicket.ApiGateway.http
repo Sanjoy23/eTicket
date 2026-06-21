@@ -1,0 +1,6 @@
+@eTicket.ApiGateway_HostAddress = http://localhost:5191
+
+GET {{eTicket.ApiGateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

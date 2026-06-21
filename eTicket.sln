@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ePayment.API", "Payment.API
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eTicket.AppHost", "eTicket.AppHost\eTicket.AppHost.csproj", "{B36979D4-82D1-42C4-B311-4062CC305B91}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eTicket.ApiGateway", "eTicket.ApiGateway\eTicket.ApiGateway.csproj", "{1F6F9987-51CA-0E1B-852A-87A6DC4F4CEE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{B36979D4-82D1-42C4-B311-4062CC305B91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B36979D4-82D1-42C4-B311-4062CC305B91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B36979D4-82D1-42C4-B311-4062CC305B91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F6F9987-51CA-0E1B-852A-87A6DC4F4CEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F6F9987-51CA-0E1B-852A-87A6DC4F4CEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F6F9987-51CA-0E1B-852A-87A6DC4F4CEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F6F9987-51CA-0E1B-852A-87A6DC4F4CEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +96,7 @@ Global
 		{9D4638BD-E109-4D14-9076-F2175DFA3D1F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{4A9AA117-1E56-462C-87F0-9C138240985A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{B36979D4-82D1-42C4-B311-4062CC305B91} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{1F6F9987-51CA-0E1B-852A-87A6DC4F4CEE} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CEA9C3F2-7BA3-4A1B-8C66-9A96547E4E48}
