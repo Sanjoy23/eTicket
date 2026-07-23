@@ -5,14 +5,9 @@ using MediatR;
 
 namespace Event.API.Application.Sessions.Handlers
 {
-    public class SeatsConfirmedCommandHandler : IRequestHandler<ConfirmSeatsCommand>
+    public class SeatsConfirmedCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<ConfirmSeatsCommand>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public SeatsConfirmedCommandHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<Unit> Handle(ConfirmSeatsCommand request, CancellationToken cancellationToken)
         {

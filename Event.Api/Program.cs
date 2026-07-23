@@ -15,6 +15,11 @@ builder.Services.AddDbContext<EventDbContext>(options =>
         npgsqlOptions => npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory_Event")));
 builder.Services.AddMediatR(typeof(Program));
 builder.Services.AddDIServices();
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    options.InstanceName = "Event:";
+});
 builder.Services.AddHostedService<SeatLockExpiryJob>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -30,7 +30,8 @@ namespace Booking.API.Application.Handlers
             {
                 throw new InvalidOperationException("Total amount must be greater than zero.");
             }
-            var receipt = new Receipt { 
+            var receipt = new Receipt
+            {
                 ReceiptNumber = await _receiptService.GenerateUniqueReceiptNumberAsync(cancellationToken: cancellationToken),
                 EventId = request.EventId,
                 UserId = request.UserId,
@@ -67,7 +68,7 @@ namespace Booking.API.Application.Handlers
 
                 var payment = await _paymentService.InitiatePaymentAsync(new PaymentInitiateRequestDto
                 {
-                    Id = receipt.Id, 
+                    Id = receipt.Id,
                     ReceiptNumber = receipt.ReceiptNumber,
                     Amount = request.TotalAmount,
                     Currency = request.Currency,
@@ -79,14 +80,16 @@ namespace Booking.API.Application.Handlers
                     Address = "Mohammadpur",
                     ProductType = "Theatre",
                     ProductProfile = "General"
-                    
+
                 }, cancellationToken);
 
-                if(payment.Status == "Failed" || payment.Status == "Cancel" )
+                if (payment.Status == "Failed" || payment.Status == "Cancel")
                 {
                     booking.Status = BookingStatus.Cancelled;
-                    await _unitOfWork.SaveChangesAsync(cancellationToken);
                 }
+                else booking.Status = BookingStatus.Paid; // default making it successful.
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
                 return new BookSeatsResponse
                 {
                     BookingId = bookingId,

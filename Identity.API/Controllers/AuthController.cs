@@ -25,7 +25,9 @@ namespace Identity.API.Controllers
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
-            var user = await _userManager.FindByEmailFromClaimsPrinciple(HttpContext.User);
+            var user = await _userManager.FindByEmailFromClaimsPrinciple(HttpContext.User)
+                ?? throw new Exception("User not found");
+                    
             return new UserDto
             {
                 Email = user.Email,
