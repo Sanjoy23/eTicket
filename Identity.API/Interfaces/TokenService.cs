@@ -1,48 +1,46 @@
 ﻿using Identity.API.Models;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
 namespace Identity.API.Interfaces
 {
-    public class TokenService : ITokenService
+    public class TokenService(IOptions<JwtSettings> jwtSettings) : ITokenService
     {
-        private readonly IConfiguration _config;
-        private readonly SymmetricSecurityKey _key;
+        private readonly JwtSettings _jwtSettings = jwtSettings.Value;
 
-        public TokenService(IConfiguration config)
+        public (string Token, DateTime ExpiresAt) CreateToken(AppUser user, IEnumerable<string> roles)
         {
-            _config = config;
-            var tokenKey = _config["Token:Key"]
-                        ?? throw new InvalidOperationException("Token:Key is not configured.");
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
-        }
-
-        public string CreateToken(AppUser user)
-        {
+            var expriesAt = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes);
             ArgumentNullException.ThrowIfNull(user.Email, nameof(user.Email));
-            ArgumentNullException.ThrowIfNull(user.DisplayName, nameof(user.DisplayName));
+            ArgumentNullException.ThrowIfNull(user.FullName, nameof(user.FullName));
             var claims = new List<Claim>
             {
-                new(ClaimTypes.Email, user.Email),
-                new(ClaimTypes.GivenName, user.DisplayName)
+                new(JwtRegisteredClaimNames.Sub, user.Id),
+                new(JwtRegisteredClaimNames.Email, user.Email),
+                new(JwtRegisteredClaimNames.GivenName, user.FullName),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
+            claims.AddRange(roles.Select(role => new Claim("role", role)));
 
-            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+            var credentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+            
+            var descriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(7),
-                SigningCredentials = creds,
-                Issuer = _config["Token:Issuer"]
+                Expires = expriesAt,
+                Issuer = _jwtSettings.Issuer,
+                Audience = _jwtSettings.Audience,
+                SigningCredentials = credentials
             };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var handler = new JsonWebTokenHandler();
+            var token = handler.CreateToken(descriptor);
 
-            return tokenHandler.WriteToken(token);
+            return (token, expriesAt);
 
         }
     }

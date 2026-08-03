@@ -6,8 +6,8 @@ namespace Event.API.Application.Sessions.Commands
 {
     public class ReleaseSessionSeatsCommand : IRequest<Unit>
     {
-        public Guid SessionId { get; set; }
-        public Guid UserId { get; set; }
+        public required Guid SessionId { get; set; }
+        public required Guid UserId { get; set; }
         public IEnumerable<Guid> SeatIds { get; set; } = [];
     }
 }

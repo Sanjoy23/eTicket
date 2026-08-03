@@ -23,7 +23,7 @@ namespace Event.Infrastructure.Repositories
 
         public async Task<IEnumerable<T>> GetAll()
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.AsNoTracking().ToListAsync();
         }
 
         public async Task Add(T entity)

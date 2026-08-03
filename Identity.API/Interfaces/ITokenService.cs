@@ -4,6 +4,6 @@ namespace Identity.API.Interfaces
 {
     public interface ITokenService
     {
-        string CreateToken(AppUser user);
+        (string Token, DateTime ExpiresAt) CreateToken(AppUser user, IEnumerable<string> roles);
     }
 }

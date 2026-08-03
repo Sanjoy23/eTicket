@@ -1,20 +1,21 @@
-﻿using Identity.API.Models;
+﻿using AutoMapper;
+using Identity.API.DTOs;
+using Identity.API.Extensions;
+using Identity.API.Interfaces;
+using Identity.API.Models;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Identity.API.Interfaces;
-using AutoMapper;
-using Identity.API.DTOs;
-using Identity.API.Extensions;
 
 namespace Identity.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController(UserManager<AppUser> userManager, 
-        SignInManager<AppUser> signInManager, 
-        ITokenService tokenService, 
-        IMapper mapper) : ControllerBase
+                                SignInManager<AppUser> signInManager, 
+                                ITokenService tokenService, 
+                                IMapper mapper) : ControllerBase
     {
         private readonly SignInManager<AppUser> _signInManager = signInManager;
         private readonly ITokenService _tokenService = tokenService;
@@ -27,12 +28,13 @@ namespace Identity.API.Controllers
         {
             var user = await _userManager.FindByEmailFromClaimsPrinciple(HttpContext.User)
                 ?? throw new Exception("User not found");
-                    
+            var roles = await _userManager.GetRolesAsync(user);
+            var (token, expireAt) = _tokenService.CreateToken(user, roles);
             return new UserDto
             {
                 Email = user.Email,
-                Token = _tokenService.CreateToken(user),
-                DisplayName = user.DisplayName
+                Token = token,
+                DisplayName = user.FullName
             };
         }
 
@@ -63,40 +65,38 @@ namespace Identity.API.Controllers
             return BadRequest("Problem updating the user");
         }
         [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
+        public async Task<IResult> Login(LoginDto loginDto)
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
-            if (user == null) return Unauthorized(new ApiResponse(401));
+            if (user == null) return Results.Unauthorized();
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
-            if (!result.Succeeded) return Unauthorized(new ApiResponse(401));
+            if (!result.Succeeded) return Results.Unauthorized();
 
-            return new UserDto
-            {
-                Email = user.Email,
-                Token = _tokenService.CreateToken(user),
-                DisplayName = user.DisplayName,
-            };
+            var roles = await _userManager.GetRolesAsync(user);
+            var (Token, ExpiresAt) = _tokenService.CreateToken(user, roles);
+
+
+            return Results.Ok(new AuthResponse(user.Id, user.Email!, roles, Token, ExpiresAt));
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
+        public async Task<IResult> Register(RegisterDto registerDto)
         {
             var user = new AppUser
             {
-                DisplayName = registerDto.DisplayName,
+                FullName = registerDto.FullName,
                 Email = registerDto.Email,
                 UserName = registerDto.Email
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
-            if (!result.Succeeded) return BadRequest(new ApiResponse(400));
-            return new UserDto
-            {
-                DisplayName = user.DisplayName,
-                Token = _tokenService.CreateToken(user),
-                Email = user.Email
-            };
+            if (!result.Succeeded) return Results.BadRequest($"Email '{registerDto.Email}' is already registered");
+
+            var roleresult = await _userManager.AddToRoleAsync(user, "Member");
+            if (!roleresult.Succeeded) return Results.BadRequest($"Role does not exist");
+
+            return Results.Ok("User registerred successfully.");
         }
     }
 }
