@@ -3,7 +3,6 @@ using Identity.API.DTOs;
 using Identity.API.Extensions;
 using Identity.API.Interfaces;
 using Identity.API.Models;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,15 +25,16 @@ namespace Identity.API.Controllers
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
-            var user = await _userManager.FindByEmailFromClaimsPrinciple(HttpContext.User)
-                ?? throw new Exception("User not found");
+            var user = await _userManager.FindByEmailFromClaimsPrinciple(HttpContext.User);
+            if (user is null) return NotFound();
             var roles = await _userManager.GetRolesAsync(user);
             var (token, expireAt) = _tokenService.CreateToken(user, roles);
             return new UserDto
             {
-                Email = user.Email,
+                Email = user.Email!,
                 Token = token,
-                DisplayName = user.FullName
+                FirstName = user.FirstName,
+                LastName = user.LastName,
             };
         }
 
@@ -49,7 +49,7 @@ namespace Identity.API.Controllers
         {
             var user = await _userManager.FindByUserByClaimsPrincipleWithAddressAsync(HttpContext.User);
 
-            return _mapper.Map<Address, AddressDto>(user.Address);
+            return _mapper.Map<Address, AddressDto>(user!.Address);
 
         }
         [Authorize]
@@ -57,7 +57,7 @@ namespace Identity.API.Controllers
         public async Task<ActionResult<AddressDto>> UpdateUserAddress(AddressDto address)
         {
             var user = await _userManager.FindByUserByClaimsPrincipleWithAddressAsync(HttpContext.User);
-            user.Address = _mapper.Map<AddressDto, Address>(address);
+            user!.Address = _mapper.Map<AddressDto, Address>(address);
             var result = await _userManager.UpdateAsync(user);
 
             if (result.Succeeded) return Ok(_mapper.Map<Address, AddressDto>(user.Address));
@@ -85,7 +85,8 @@ namespace Identity.API.Controllers
         {
             var user = new AppUser
             {
-                FullName = registerDto.FullName,
+                FirstName = registerDto.FirstName,
+                LastName = registerDto.Lastname,
                 Email = registerDto.Email,
                 UserName = registerDto.Email
             };

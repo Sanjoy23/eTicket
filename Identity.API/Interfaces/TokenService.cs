@@ -14,13 +14,14 @@ namespace Identity.API.Interfaces
         public (string Token, DateTime ExpiresAt) CreateToken(AppUser user, IEnumerable<string> roles)
         {
             var expriesAt = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes);
-            ArgumentNullException.ThrowIfNull(user.Email, nameof(user.Email));
-            ArgumentNullException.ThrowIfNull(user.FullName, nameof(user.FullName));
+            ArgumentNullException.ThrowIfNull(user.Email);
+            ArgumentNullException.ThrowIfNull(user.FirstName);
             var claims = new List<Claim>
             {
                 new(JwtRegisteredClaimNames.Sub, user.Id),
                 new(JwtRegisteredClaimNames.Email, user.Email),
-                new(JwtRegisteredClaimNames.GivenName, user.FullName),
+                new(JwtRegisteredClaimNames.GivenName, user.FirstName),
+                new(JwtRegisteredClaimNames.FamilyName, user.LastName),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             claims.AddRange(roles.Select(role => new Claim("role", role)));
