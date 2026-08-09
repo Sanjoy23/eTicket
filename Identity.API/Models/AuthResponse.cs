@@ -5,5 +5,9 @@
     string Email,
     IList<string> Roles,
     string Token,
-    DateTimeOffset ExpiresAt);
+    DateTimeOffset ExpiresAt,
+    string RefreshToken, DateTime RefreshExpiresAt);
+
+
+    public record RevokeRequest(string RefreshToken);
 }

@@ -30,7 +30,7 @@ namespace Identity.API.Data
                     EmailConfirmed = true
                 };
                 
-                await userManager.CreateAsync(admin);
+                await userManager.CreateAsync(admin, "Admin@123");
                 await userManager.AddToRoleAsync(admin, "Admin");
             }
         }

@@ -33,6 +33,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 var _jwtSetting = builder.Configuration
                             .GetSection("JwtSettings")
                             .Get<JwtSettings>() ?? throw new InvalidOperationException("JwtSettings section is missing or invalid in configuration.");
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

@@ -7,9 +7,6 @@ namespace Identity.API.Data
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<AppUser>(options)
     {
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-        }
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
     }
 }
