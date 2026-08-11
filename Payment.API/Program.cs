@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<PaymentDbContext>(options =>
     options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
+        builder.Configuration["ConnectionStrings:DefaultConnection"],
         npgsqlOptions => npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory_Payment")));
 builder.Services
     .AddOptions<SslCommerzOptions>()

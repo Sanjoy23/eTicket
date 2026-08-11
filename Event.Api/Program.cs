@@ -13,14 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<EventDbContext>(options =>
     options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
+        builder.Configuration["ConnectionStrings:DefaultConnection"],
         npgsqlOptions => npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory_Event")));
 builder.Services.AddMediatR(typeof(Program));
 builder.Services.AddDIServices();
 
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 {
-    var configuration = builder.Configuration.GetConnectionString("Redis");
+    var configuration = builder.Configuration["Redis"];
     return ConnectionMultiplexer.Connect(configuration ?? "Redis");
 });
 

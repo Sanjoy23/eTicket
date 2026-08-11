@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<BookingDbContext>(options =>
     options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
+        builder.Configuration["ConnectionStrings:DefaultConnection"],
         npgsqlOptions => npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory_Booking")));
 builder.Services.AddDIServices();
 builder.Services.AddMediatR(typeof(Program));
