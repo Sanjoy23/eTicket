@@ -30,6 +30,8 @@ namespace Booking.API.Application.Handlers
             {
                 throw new InvalidOperationException("Total amount must be greater than zero.");
             }
+            
+            var bookingId = Guid.NewGuid();
             var receipt = new Receipt
             {
                 ReceiptNumber = await _receiptService.GenerateUniqueReceiptNumberAsync(cancellationToken: cancellationToken),
@@ -37,17 +39,17 @@ namespace Booking.API.Application.Handlers
                 UserId = request.UserId,
                 PaymentAmount = request.TotalAmount,
                 PaymentDate = DateTime.UtcNow,
-                CurrencyId = "BDT",
+                CurrencyId = request.Currency,
                 IsPaid = false
             };
             await _unitOfWork.Receipts.AddAsync(receipt, cancellationToken);
 
-            var bookingId = Guid.NewGuid();
             await _seatLockService.LockSeatsAsync(request.UserId, request.SessionId, seatIds, cancellationToken);
 
+            EventBooking? booking = null;
             try
             {
-                var booking = new EventBooking
+                booking = new EventBooking
                 {
                     BookingId = bookingId,
                     UserId = request.UserId,
@@ -69,6 +71,8 @@ namespace Booking.API.Application.Handlers
                 var payment = await _paymentService.InitiatePaymentAsync(new PaymentInitiateRequestDto
                 {
                     Id = receipt.Id,
+                    BookingId = bookingId,
+                    UserId = request.UserId,
                     ReceiptNumber = receipt.ReceiptNumber,
                     Amount = request.TotalAmount,
                     Currency = request.Currency,
@@ -83,12 +87,12 @@ namespace Booking.API.Application.Handlers
 
                 }, cancellationToken);
 
-                if (payment.Status == "Failed" || payment.Status == "Cancel")
+                if (payment.Status == "Failed" || payment.Status == "Cancel" || payment.Status == "Cancelled")
                 {
                     booking.Status = BookingStatus.Cancelled;
+                    await _seatLockService.ReleaseSeatsAsync(request.SessionId, request.UserId, seatIds, cancellationToken);
+                    await _unitOfWork.SaveChangesAsync(cancellationToken);
                 }
-                else booking.Status = BookingStatus.Paid; // default making it successful.
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                 return new BookSeatsResponse
                 {
@@ -101,6 +105,12 @@ namespace Booking.API.Application.Handlers
             catch
             {
                 await _seatLockService.ReleaseSeatsAsync(request.SessionId, request.UserId, seatIds, cancellationToken);
+                if (booking is not null)
+                {
+                    booking.Status = BookingStatus.Cancelled;
+                    await _unitOfWork.SaveChangesAsync(CancellationToken.None);
+                }
+
                 throw;
             }
         }

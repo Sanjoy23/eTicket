@@ -19,8 +19,21 @@ namespace ePayment.API.Infrastructure.Data
                 .HasPrecision(18, 2);
 
             modelBuilder.Entity<PaymentEntity>()
+                .Property(payment => payment.Status)
+                .HasConversion<int>();
+
+            modelBuilder.Entity<PaymentEntity>()
                 .HasIndex(payment => payment.TransactionId)
                 .IsUnique();
+
+            modelBuilder.Entity<PaymentEntity>()
+                .HasIndex(payment => payment.BookingId);
+
+            modelBuilder.Entity<PaymentEntity>()
+                .HasIndex(payment => payment.ReceiptId);
+
+            modelBuilder.Entity<PaymentEntity>()
+                .HasIndex(payment => payment.Status);
         }
     }
 }

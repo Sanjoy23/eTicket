@@ -23,7 +23,10 @@ namespace Booking.API.Services
 
             if (!response.IsSuccessStatusCode) { 
                 var error = await response.Content.ReadAsStringAsync(cancellationToken);
-                throw new Exception($"Seat lock failed {error}");
+                throw new HttpRequestException(
+                    $"Seat lock failed. Event service returned {(int)response.StatusCode}: {error}",
+                    inner: null,
+                    response.StatusCode);
             }
         }
         public async Task ReleaseSeatsAsync(Guid sessionId, Guid userId, List<Guid> seatIds, CancellationToken cancellationToken)
@@ -41,7 +44,10 @@ namespace Booking.API.Services
             if (!response.IsSuccessStatusCode)
             {
                 var error = await response.Content.ReadAsStringAsync(cancellationToken);
-                throw new Exception($"Seat release failed {error}");
+                throw new HttpRequestException(
+                    $"Seat release failed. Event service returned {(int)response.StatusCode}: {error}",
+                    inner: null,
+                    response.StatusCode);
             }
         }
 
@@ -61,7 +67,10 @@ namespace Booking.API.Services
             if (!response.IsSuccessStatusCode)
             {
                 var error = await response.Content.ReadAsStringAsync(cancellationToken);
-                throw new Exception($"Seat confirmation failed {error}");
+                throw new HttpRequestException(
+                    $"Seat confirmation failed. Event service returned {(int)response.StatusCode}: {error}",
+                    inner: null,
+                    response.StatusCode);
             }
         }
     }

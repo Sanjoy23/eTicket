@@ -50,10 +50,26 @@ namespace Booking.API.Controllers
                 return BadRequest("Payment was not verified for this booking.");
             }
 
+            if (payment.Amount != 0 && payment.Amount != booking.TotalAmount)
+            {
+                return BadRequest("Verified payment amount does not match booking amount.");
+            }
+
             var seatIds = booking.BookingSeats.Select(seat => seat.EventSeatId).ToList();
             await _seatLockService.ConfirmSeatsAsync(request.SessionId, booking.BookingId, booking.UserId, seatIds, cancellationToken);
 
             booking.Status = BookingStatus.Paid;
+            var receipt = await _unitOfWork.Receipts.GetByIdAsync(payment.ReceiptId, cancellationToken);
+            if (receipt is not null)
+            {
+                receipt.IsPaid = true;
+                receipt.PaymentDate = DateTime.UtcNow;
+                receipt.TransactionResultText = payment.Status;
+                receipt.PaymentInfo = payment.TransactionId;
+                receipt.ModifiedOn = DateTime.UtcNow;
+                receipt.ModifiedBy = booking.UserId;
+            }
+
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Ok(new { booking.BookingId, booking.Status });
